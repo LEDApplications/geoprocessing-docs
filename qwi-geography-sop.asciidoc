@@ -2,6 +2,8 @@
 :nofooter:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
+* link:index.html[LEHD Geography Production Documents]
+
 == Step 1
 
 Some step information
