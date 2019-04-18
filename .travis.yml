@@ -13,7 +13,7 @@ before_install:
 
 script:
   - workdir=$(pwd)
-  - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor index.asciidoc
+  - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -b html5 -a icons -a toc=left -a numbered -a linkcss -a outfilesuffix=.html *.asciidoc 
 
 after_error: 
   - docker logs asciidoc-to-html
@@ -22,9 +22,7 @@ after_failure:
   - docker logs asciidoc-to-html
 
 after_success:
-  - git rm *.asciidoc
-  - git rm *.md
-  - git rm *.travis.yml
+  - git rm $(ls | grep -v *.html)
 
 deploy:
   - provider: pages
