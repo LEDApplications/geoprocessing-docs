@@ -1,4 +1,5 @@
 = QWI/QWIExplorer Geography Production Docs
+:nofooter:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 == Step 1

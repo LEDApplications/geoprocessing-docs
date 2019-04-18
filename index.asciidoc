@@ -1,6 +1,5 @@
-:last-update-label!:
-
 = Geoprocessing-docs
+:nofooter:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 LEHD Geography Production Documents

@@ -1,4 +1,5 @@
 = LODES/OnTheMap Standard Operating Procedure
+:nofooter:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 == Step 1
