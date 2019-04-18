@@ -1,3 +1,5 @@
+:ext-relative: {outfilesuffix}
+
 = Geoprocessing-docs
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
