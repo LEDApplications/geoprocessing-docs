@@ -1,6 +1,6 @@
 dist: xenial
 
-env: DOC_OUT=_doc
+env: DOC_OUT=/_doc
 
 addons:
   apt:
@@ -21,7 +21,7 @@ before_install:
   - docker pull asciidoctor/docker-asciidoctor
 
 script:
-  - mkdir _out
+  - mkdir $DOC_OUT
   - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor test.asciidoc -D $DOC_OUT
 
 after_error: 
