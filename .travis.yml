@@ -1,0 +1,41 @@
+dist: xenial
+
+env: DOC_OUT=_doc
+
+addons:
+  apt:
+    packages:
+      - libtext-multimarkdown-perl
+
+sudo: required
+
+services:
+  - docker
+
+# safelist
+branches:
+  only:
+  - master
+  
+before_install:
+  - docker pull asciidoctor/docker-asciidoctor
+
+script:
+  - mkdir _out
+  - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor test.asciidoc -D $DOC_OUT
+
+after_error: 
+  - docker logs asciidoc-to-html
+
+after_failure:
+  - docker logs asciidoc-to-html
+
+deploy:
+  - provider: pages
+    github-token: $GH_TOKEN 
+    skip-cleanup: true
+    keep-history: false
+    target-branch: gh-pages
+    local-dir: $DOC_OUT
+    on:
+        branch: master
