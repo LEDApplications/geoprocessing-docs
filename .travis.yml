@@ -22,7 +22,9 @@ after_failure:
   - docker logs asciidoc-to-html
 
 after_success:
-  - git rm $(ls | grep -v *.html)
+  - git rm *.yml
+  - git rm *.md
+  - gir rm *.asciidoc
 
 deploy:
   - provider: pages

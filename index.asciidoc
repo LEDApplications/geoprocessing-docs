@@ -1,32 +1,14 @@
-= Introduction to AsciiDoc
-Doc Writer <doc@example.com>
+= Geoprocessing-docs
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
-A preface about https://asciidoc.org[AsciiDoc].
+LEHD Geography Production Documents
 
-== First Section
+== LODES/OnTheMap Geography Production Docs
 
-* item 1
-* item 2
+link: ../lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
 
-[source,ruby]
-puts "Hello, World!"
+== QWI/QWIExplorer Geography Production Docs
 
-= The Dangerous and Thrilling Documentation Chronicles
-Kismet Chameleon
-:toc: left
-
-This journey begins on a bleary...
-
-== Cavern Glow
-
-The river rages through the cavern, rattling its content...
-
-== The Ravages of Writing
-
-Her finger socks had been vaporized by crystalline nuggets of...
-
-=== A Recipe for Potion
-
-Two fresh Burdockian leaves, harvested by the light of the teal moons...
+link: ../lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
 
 :nofooter:
