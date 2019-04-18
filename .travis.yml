@@ -21,6 +21,11 @@ after_error:
 after_failure:
   - docker logs asciidoc-to-html
 
+after_success:
+  - git rm *.asciidoc
+  - git rm *.md
+  - git rm *.travis.yml
+
 deploy:
   - provider: pages
     github-token: $GH_TOKEN 
