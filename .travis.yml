@@ -1,6 +1,6 @@
 dist: xenial
 
-env: DOC_OUT=/_doc
+env: DOC_OUT=/tmp/_doc
 
 addons:
   apt:
