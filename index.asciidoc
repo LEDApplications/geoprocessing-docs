@@ -1,5 +1,3 @@
-:ext-relative: {outfilesuffix}
-
 = Geoprocessing-docs
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
@@ -7,10 +5,13 @@ LEHD Geography Production Documents
 
 == LODES/OnTheMap Geography Production Docs
 
-* link:lodes-geography-sop{ext-relative}[LODES/OnTheMap Standard Operating Procedure]
+* link:lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
 
 == QWI/QWIExplorer Geography Production Docs
 
-* link:qwi-geography-sop{ext-relative}[QWI/QWIExplorer Standard Operating Procedure]
+* link:qwi-geography-sop.html[QWI/QWIExplorer Standard Operating Procedure]
 
-:nofooter:
+----
+// Disable last updated text.
+:last-update-label!:
+----
