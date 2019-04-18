@@ -2,10 +2,152 @@
 :nofooter:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
-== Step 1
+* link:index.html[LEHD Geography Production Documents]
 
-Some step information
+== Unpack Faces Data
 
-=== Substep 1
+Unpack faces data needed for xwalk production
 
-Some more information
+[source,bash]
+----
+mkdir ~/workspace/postgis_tiger/otm_tiger_current
+cd ~/workspace/postgis_tiger/otm_tiger_current
+ln -s /data/production/prod/current/extiger/us/tl_2018*faces*gz .
+gunzip *.gz -f
+cd ..
+----
+
+== Set environment variables
+
+Set the new schema prefix and environment variables
+
+[source,bash]
+----
+vi 00_setenvvars.bash
+----
+
+== Format faces for crosswalking
+
+create the crosswalk from the faces files
+
+[source,bash]
+----
+time ./02_xwalk.bash faces
+----
+
+
+== Unpack shapefile data
+
+unpack the shape data needed
+
+[source,bash]
+----
+cd ~/workspace/postgis_tiger/otm_tiger_current
+ln -s /data/production/prod/current/extiger/us/tl_2018*{aiannh,aitsn,anrc,arealm,bg,cbsa,cd116,county,cousub,elsd,mil,necta,place,pointlm,rails,scsd,sldl,sldu,state,tract,unsd,zcta510}*gz .
+gunzip *.gz -f
+cd ..
+----
+
+== Load shp-> db
+
+load the shape data into the db
+
+[source,bash]
+----
+time ./04_shapeloader.bash otm_tiger_current otm
+----
+ 
+== Get WIB csv
+
+unpack the wib csv data
+
+[source,bash]
+----
+mkdir wib_csvs
+cd wib_csvs
+ln -s /data/production/prod/current/exwib/us/*2018.csv.gz .
+gunzip *.gz -f
+chmod u+w *.csv
+cd ..
+----
+
+== Load WIB Defs
+
+load the wib csv definitions into the database
+
+[source,bash]
+----
+time ./05_wibcsvloader.bash wib_csvs/
+----
+
+== Create public WIBs
+
+Create WIB polygons
+
+[source,bash]
+----
+time ./06_wibshape.bash wib
+----
+
+== Validate Schemas
+
+Validate that the loaded shapefiles match the table schemas from previous
+
+[source,bash]
+----
+./07_checkschemas_qa.bash all
+----
+
+== Project Geography
+
+project into albers
+
+[source,bash]
+----
+./08_project.bash otm
+----
+
+== Remove undefined
+
+remove undefined areas from projected shapefiles
+
+[source,bash]
+----
+time ./09_removeundefined.bash all
+----
+
+== Remove unpopulated
+
+remove unpopulated areas from projected shapefiles
+
+[source,bash]
+----
+time ./10_removeunpopulated.bash otm
+----
+
+== Create Schools
+
+create single schools table
+
+[source,bash]
+----
+./11_createschools.bash schools
+----
+
+== Format military names
+
+format the military names
+
+[source,bash]
+----
+./12_formatnames.bash mil
+----
+
+== Crosswalk
+
+create the crosswalk 
+
+[source,bash]
+----
+time ./13_intptxwalk.bash xwalk
+----
