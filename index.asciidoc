@@ -1,17 +1,14 @@
+:last-update-label!:
+
 = Geoprocessing-docs
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 LEHD Geography Production Documents
 
-== LODES/OnTheMap Geography Production Docs
+== LODES/OnTheMap
 
 * link:lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
 
-== QWI/QWIExplorer Geography Production Docs
+== QWI/QWIExplorer
 
 * link:qwi-geography-sop.html[QWI/QWIExplorer Standard Operating Procedure]
-
-----
-// Disable last updated text.
-:last-update-label!:
-----
