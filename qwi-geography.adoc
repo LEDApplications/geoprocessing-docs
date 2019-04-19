@@ -1,8 +1,8 @@
-= QWI/QWIExplorer Geography Production Docs
+= QWI/QWIExplorer Public Doc
 :nofooter:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
-* link:index.html[LEHD Geography Production Documents]
+link:index.html[Back to Main Page]
 
 == Step 1
 

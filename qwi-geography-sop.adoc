@@ -1,0 +1,29 @@
+= QWI/QWIExplorer Geography Production Docs
+:nofooter:
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:index.html[Back to Main Page]
+
+== Unpack raw shapefiles
+
+unpack data needed for QWI production
+
+[source,bash]
+----
+mkdir ~/workspace/postgis_tiger/qwi_tiger_current
+cd ~/workspace/postgis_tiger/qwi_tiger_current
+ln -s /data/production/prod/current/extiger/us/*2018*{state,county,cousub,cbsa,place,tract}*gz .
+gunzip *.gz -f
+cd ..
+----
+
+load into database
+
+[source,bash]
+----
+./04_shapeloader.bash ./qwi_tiger_current/ qwi
+----
+
+== TEST INCLUDE
+
+include::lodes-geography-sop.adoc[]
