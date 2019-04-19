@@ -17,11 +17,36 @@ gunzip *.gz -f
 cd ..
 ----
 
-load into database
+include::geography.mdoc[tags=geo00env]
 
+include::geography.mdoc[tags=geo04]
+
+== Unpack wib csvs
+
+unpack the csv definitions
 
 [source,bash]
 ----
-./04_shapeloader.bash ./qwi_tiger_current/ qwi
+mkdir ~/workspace/postgis_tiger/qwi_wib_csvs
+cd ~/workspace/postgis_tiger/qwi_wib_csvs
+ln -s /data/production/prod/current/exwib/us/*gz .
+gunzip *.gz -f
+chmod u+w *.csv
+cd ..
 ----
 
+== Cleanup 
+
+Remove unpacked files
+
+[source,bash]
+----
+rm -rf /~workspace/postgis_tiger/qwi_tiger_current
+rm -rf ./qwi_wib_csvs/
+----
+
+include::geography.mdoc[tags=geo06]
+
+include::geography.mdoc[tags=geo08]
+
+include::geography.mdoc[tags=geo10]

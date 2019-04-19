@@ -2,7 +2,7 @@
 :nofooter:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
-* link:index.html[LEHD Geography Production Documents]
+link:index.html[Back to Main Page]
 
 == Unpack Faces Data
 
@@ -51,24 +51,21 @@ chmod u+w *.csv
 cd ..
 ----
 
+include::geography.mdoc[tags=geo05]
 
-./11_createschools.bash schools
-----
+include::geography.mdoc[tags=geo06]
 
-== Format military names
+include::geography.mdoc[tags=geo07]
 
-format the military names
+include::geography.mdoc[tags=geo08]
 
-[source,bash]
-----
-./12_formatnames.bash mil
-----
+include::geography.mdoc[tags=geo09]
 
-== Crosswalk
+include::geography.mdoc[tags=geo10]
 
-create the crosswalk 
+include::geography.mdoc[tags=geo11]
 
-[source,bash]
-----
-time ./13_intptxwalk.bash xwalk
-----
+include::geography.mdoc[tags=geo12]
+
+include::geography.mdoc[tags=geo13]
+
