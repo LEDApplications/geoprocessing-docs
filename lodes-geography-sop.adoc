@@ -17,24 +17,11 @@ gunzip *.gz -f
 cd ..
 ----
 
-== Set environment variables
+include::geography.mdoc[tags=geo00env]
 
-Set the new schema prefix and environment variables
+include::geography.mdoc[tags=geo01]
 
-[source,bash]
-----
-vi 00_setenvvars.bash
-----
-
-== Format faces for crosswalking
-
-create the crosswalk from the faces files
-
-[source,bash]
-----
-time ./02_xwalk.bash faces
-----
-
+include::geography.mdoc[tags=geo02]
 
 == Unpack shapefile data
 
@@ -48,16 +35,7 @@ gunzip *.gz -f
 cd ..
 ----
 
-// tag::geo04[]
-== Load shp-> db
-
-load the shape data into the db
-
-[source,bash]
-----
-time ./04_shapeloader.bash otm_tiger_current otm
-----
-// end::geo04[]
+include::geography.mdoc[tags=geo04]
 
 == Get WIB csv
 
@@ -73,66 +51,7 @@ chmod u+w *.csv
 cd ..
 ----
 
-== Load WIB Defs
 
-load the wib csv definitions into the database
-
-[source,bash]
-----
-time ./05_wibcsvloader.bash wib_csvs/
-----
-
-== Create public WIBs
-
-Create WIB polygons
-
-[source,bash]
-----
-time ./06_wibshape.bash wib
-----
-
-== Validate Schemas
-
-Validate that the loaded shapefiles match the table schemas from previous
-
-[source,bash]
-----
-./07_checkschemas_qa.bash all
-----
-
-== Project Geography
-
-project into albers
-
-[source,bash]
-----
-./08_project.bash otm
-----
-
-== Remove undefined
-
-remove undefined areas from projected shapefiles
-
-[source,bash]
-----
-time ./09_removeundefined.bash all
-----
-
-== Remove unpopulated
-
-remove unpopulated areas from projected shapefiles
-
-[source,bash]
-----
-time ./10_removeunpopulated.bash otm
-----
-
-== Create Schools
-
-create single schools table
-
-[source,bash]
-----
 ./11_createschools.bash schools
 ----
 

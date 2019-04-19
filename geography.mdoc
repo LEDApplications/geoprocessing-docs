@@ -1,0 +1,142 @@
+// tag::geo00env[]
+== Set environment variables
+
+Set the new schema prefix and environment variables
+
+[source,bash]
+----
+vi 00_setenvvars.bash
+----
+// end::geo00env[]
+
+// tag::geo01[]
+== Load faces
+
+load the faces to the db
+
+[source,bash]
+----
+time 01_facesloader.bash /path/to/files faces
+----
+// end::geo01[]
+
+// tag::geo02[]
+== Format faces for crosswalking
+
+create the crosswalk from the faces files
+
+[source,bash]
+----
+time ./02_xwalk.bash faces
+----
+// end::geo02[]
+
+// tag::geo04[]
+== Load shp-> db
+
+load the shape data into the db
+
+[source,bash]
+----
+time ./04_shapeloader.bash otm_tiger_current otm
+----
+// end::geo04[]
+
+// tag::geo05[]
+== Load WIB Defs
+
+load the wib csv definitions into the database
+
+[source,bash]
+----
+time ./05_wibcsvloader.bash wib_csvs/
+----
+// end::geo05[]
+
+// tag::geo06[]
+== Create public WIBs
+
+Create WIB polygons
+
+[source,bash]
+----
+time ./06_wibshape.bash wib
+----
+// end::geo06[]
+
+// tag::geo07[]
+== Validate Schemas
+
+Validate that the loaded shapefiles match the table schemas from previous
+
+[source,bash]
+----
+./07_checkschemas_qa.bash all
+----
+// end::geo07[]
+
+// tag::geo08[]
+== Project Geography
+
+project into albers
+
+[source,bash]
+----
+./08_project.bash otm
+----
+// end::geo08[]
+
+// tag::geo09[]
+== Remove undefined
+
+remove undefined areas from projected shapefiles
+
+[source,bash]
+----
+time ./09_removeundefined.bash all
+----
+// end::geo09[]
+
+// tag::geo10[]
+== Remove unpopulated
+
+remove unpopulated areas from projected shapefiles
+
+[source,bash]
+----
+time ./10_removeunpopulated.bash otm
+----
+// end::geo10[]
+
+// tag::geo11[]
+== Create Schools
+
+create single schools table
+
+[source,bash]
+----
+./11_createschools.bash schools
+----
+// end::geo11[]
+
+// tag::geo12[]
+== Format military names
+
+format the military names
+
+[source,bash]
+----
+./12_formatnames.bash mil
+----
+// end::geo12[]
+
+// tag::geo13[]
+== Crosswalk
+
+create the crosswalk 
+
+[source,bash]
+----
+time ./13_intptxwalk.bash xwalk
+----
+// end::geo13[]

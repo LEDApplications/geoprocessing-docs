@@ -7,9 +7,11 @@ LEHD Geography Production Documents
 == LODES/OnTheMap
 
 link:lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
+
 link:lodes-geography.html[LODES/OnTheMap Public Doc]
 
 == QWI/QWIExplorer
 
 link:qwi-geography-sop.html[QWI/QWIExplorer Standard Operating Procedure]
+
 link:qwi-geography.html[QWI/QWIExplorer Public Doc]

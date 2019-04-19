@@ -25,6 +25,3 @@ load into database
 ./04_shapeloader.bash ./qwi_tiger_current/ qwi
 ----
 
-== TEST INCLUDE
-
-include::lodes-geography-sop.adoc[tags=geo04]

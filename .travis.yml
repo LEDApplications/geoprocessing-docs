@@ -25,6 +25,7 @@ after_success:
   - git rm *.yml
   - git rm *.md
   - git rm *.adoc
+  - git rm *.mdoc
 
 deploy:
   - provider: pages
