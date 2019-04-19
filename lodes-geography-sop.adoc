@@ -48,6 +48,7 @@ gunzip *.gz -f
 cd ..
 ----
 
+// tag::geo04[]
 == Load shp-> db
 
 load the shape data into the db
@@ -56,7 +57,8 @@ load the shape data into the db
 ----
 time ./04_shapeloader.bash otm_tiger_current otm
 ----
- 
+// end::geo04[]
+
 == Get WIB csv
 
 unpack the wib csv data

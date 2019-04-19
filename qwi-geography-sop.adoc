@@ -19,6 +19,7 @@ cd ..
 
 load into database
 
+
 [source,bash]
 ----
 ./04_shapeloader.bash ./qwi_tiger_current/ qwi
@@ -26,4 +27,4 @@ load into database
 
 == TEST INCLUDE
 
-include::lodes-geography-sop.adoc[]
+include::lodes-geography-sop.adoc[tags=geo04]
