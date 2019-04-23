@@ -1,0 +1,228 @@
+= Load LODES to Postgres
+:nofooter:
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:index.html[Back to Main Page]
+
+== Load RAC files into a Postgres database
+
+On occasion we need to download and process the LODES public files for QA and other activities. 
+These steps provide an general layout on how to download and process the data. 
+
+=== Download LODES public use files
+
+URLs are of the form https://lehd.ces.census.gov/data/lodes/LODES7/al/rac/al_rac_S000_JT01_2015.csv.gz
+
+[source,bash]
+----
+racworkdir=/path/to/store/files/rac
+dbname=*postgres database name*
+
+states="al ak az ar ca co ct dc de fl ga hi id il in ia ks ky la me md ma mi mn ms mo mt ne nv nh nj nm ny nc nd oh ok or pa ri sc sd tn tx ut vt va wa wv wi wy"
+urlroot=https://lehd.ces.census.gov/data/lodes/LODES7
+dataset=rac # rac wac od
+segment=S000
+jobtype=JT01
+year=2015
+
+# move to download directory
+mkdir $racworkdir
+cd $racworkdir
+
+# Download state based data
+for state in $states; do
+  csvfile=$state"_"$dataset"_"$segment"_"$jobtype"_"$year".csv.gz"
+  wget $urlroot"/"$state"/"$dataset"/"$csvfile
+done
+
+# unpack
+gunzip *.csv.gz
+----
+
+=== Create table schema
+
+Login to the database specified. Create the table schema to store the RAC files. 
+
+[source,SQL]
+----
+CREATE SCHEMA testing;
+CREATE TABLE testing.rac (
+  h_geocode VARCHAR(15),
+  C000 INTEGER,
+  CA01 INTEGER,
+  CA02 INTEGER,
+  CA03 INTEGER,
+  CE01 INTEGER,
+  CE02 INTEGER,
+  CE03 INTEGER,
+  CNS01 INTEGER,
+  CNS02 INTEGER,
+  CNS03 INTEGER,
+  CNS04 INTEGER,
+  CNS05 INTEGER,
+  CNS06 INTEGER,
+  CNS07 INTEGER,
+  CNS08 INTEGER,
+  CNS09 INTEGER,
+  CNS10 INTEGER,
+  CNS11 INTEGER,
+  CNS12 INTEGER,
+  CNS13 INTEGER,
+  CNS14 INTEGER,
+  CNS15 INTEGER,
+  CNS16 INTEGER,
+  CNS17 INTEGER,
+  CNS18 INTEGER,
+  CNS19 INTEGER,
+  CNS20 INTEGER,
+  CR01 INTEGER,
+  CR02 INTEGER,
+  CR03 INTEGER,
+  CR04 INTEGER,
+  CR05 INTEGER,
+  CR07 INTEGER,
+  CT01 INTEGER,
+  CT02 INTEGER,
+  CD01 INTEGER,
+  CD02 INTEGER,
+  CD03 INTEGER,
+  CD04 INTEGER,
+  CS01 INTEGER,
+  CS02 INTEGER,
+  createdate VARCHAR(8)
+);
+----
+
+=== Load the RAC files
+
+Loop through the file listing and copy the data in
+
+[source,bash]
+----
+# move to download directory
+cd $racworkdir
+
+for f in *.csv
+do  
+  echo "Loading: $f"
+  psql -q -d $dbname <<SQL >/dev/null
+    \copy testing.rac FROM '$f' DELIMITER ',' CSV HEADER
+SQL
+done
+----
+
+=== Index the geoid
+
+Login to the database specified. Add an index to the geoid column.
+
+[source,SQL]
+----
+CREATE INDEX rac_geoid_idx ON testing.rac(h_geocode);
+----
+
+
+== Load WAC files into a Postgres database
+
+This process is identical to the RAC steps except for the table schema and the dataset name.
+
+=== Download LODES public use files
+
+Exactly the same as the RAC process except for the dataset name
+
+[source,bash]
+----
+wacworkdir=/path/to/store/files/wac
+dataset=wac
+mkdir $wacworkdir
+----
+
+=== Create table schema
+
+Login to the database specified. Create the table schema to store the WAC files. 
+
+[source,SQL]
+----
+CREATE SCHEMA testing;
+CREATE TABLE testing.wac (
+  w_geocode VARCHAR(15),
+  C000 INTEGER,
+  CA01 INTEGER,
+  CA02 INTEGER,
+  CA03 INTEGER,
+  CE01 INTEGER,
+  CE02 INTEGER,
+  CE03 INTEGER,
+  CNS01 INTEGER,
+  CNS02 INTEGER,
+  CNS03 INTEGER,
+  CNS04 INTEGER,
+  CNS05 INTEGER,
+  CNS06 INTEGER,
+  CNS07 INTEGER,
+  CNS08 INTEGER,
+  CNS09 INTEGER,
+  CNS10 INTEGER,
+  CNS11 INTEGER,
+  CNS12 INTEGER,
+  CNS13 INTEGER,
+  CNS14 INTEGER,
+  CNS15 INTEGER,
+  CNS16 INTEGER,
+  CNS17 INTEGER,
+  CNS18 INTEGER,
+  CNS19 INTEGER,
+  CNS20 INTEGER,
+  CR01 INTEGER,
+  CR02 INTEGER,
+  CR03 INTEGER,
+  CR04 INTEGER,
+  CR05 INTEGER,
+  CR07 INTEGER,
+  CT01 INTEGER,
+  CT02 INTEGER,
+  CD01 INTEGER,
+  CD02 INTEGER,
+  CD03 INTEGER,
+  CD04 INTEGER,
+  CS01 INTEGER,
+  CS02 INTEGER,
+  CFA01 INTEGER,
+  CFA02 INTEGER,
+  CFA03 INTEGER,
+  CFA04 INTEGER,
+  CFA05 INTEGER,
+  CFS01 INTEGER,
+  CFS02 INTEGER,
+  CFS03 INTEGER,
+  CFS04 INTEGER,
+  CFS05 INTEGER,
+  createdate VARCHAR(8)
+);
+----
+
+=== Load the WAC files
+
+Loop through the file listing and copy the data in
+
+[source,bash]
+----
+# move to download directory
+cd $wacworkdir
+
+for f in *.csv
+do  
+  echo "Loading: $f"
+  psql -q -d $dbname <<SQL >/dev/null
+    \copy testing.wac FROM '$f' DELIMITER ',' CSV HEADER
+SQL
+done
+----
+
+=== Index the geoid
+
+Login to the database specified. Add an index to the geoid column.
+
+[source,SQL]
+----
+CREATE INDEX wac_geoid_idx ON testing.wac(w_geocode);
+----
