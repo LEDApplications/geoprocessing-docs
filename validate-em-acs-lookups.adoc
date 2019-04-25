@@ -1,0 +1,138 @@
+= Validate EM ACS Lookups
+:nofooter:
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:index.html[Back to Main Page]
+
+== Validate the table/column identities
+
+=== Preparation
+
+* download the tableshells
+* convert them to csv files
+* remove any windows text formatting with:
+[source,bash]
+----
+dos2unix filename > outputfile
+----
+* login to database
+
+=== Create schema and tableshells
+
+[source,SQL]
+----
+CREATE SCHEMA acs;
+CREATE TABLE acs.tableshells2015 (
+TableID TEXT,
+Line TEXT,
+UniqueID TEXT,
+Stub TEXT, 
+DataRelease TEXT
+);
+
+CREATE TABLE acs.tableshells2017 (
+TableID TEXT,
+Line TEXT,
+UniqueID TEXT,
+Stub TEXT, 
+DataRelease TEXT,
+TblType TEXT,
+EstimateType TEXT,
+Negative TEXT,
+Weight TEXT,
+Accuracy TEXT,
+Rounding TEXT,
+AggregateVariable TEXT,
+MedianVariable TEXT,
+Edit TEXT
+);
+----
+
+=== Load data
+
+[source,SQL]
+----
+\copy acs.tableshells2015 FROM 'ACS2015_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
+\copy acs.tableshells2017 FROM 'ACS2017_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
+----
+
+=== Drop all with data with a null uniqueid
+
+[source,SQL]
+----
+DELETE FROM acs.tableshells2015 WHERE uniqueid IS NULL;
+DELETE FROM acs.tableshells2017 WHERE uniqueid IS NULL;
+----
+
+=== Check differences in EM Lookups
+
+[source,SQL]
+----
+SELECT l.tableid, l.uniqueid, l.stub, r.stub 
+FROM acs.tableshells2015 l
+LEFT JOIN acs.tableshells2017 r
+ON l.uniqueid = r.uniqueid
+WHERE l.tableid in ('B02001', 'B22010', 'B25034', 'B09020', 'C17002', 'B11002', 'B25040', 'B25024', 'B25044', 'B11007', 'C21007', 'B16004', 'B19059', 'B17021', 'B19055', 'B19057', 'B19056', 'B19051', 'B03003', 'B25082') AND
+l.stub <> r.stub;
+----
+
+IMPORTANT: Check that the output here returns 0 rows. Also, consider removing the stub <> comparison to test the join.
+
+=== clear table
+
+[source,SQL]
+----
+TRUNCATE acs.tableshells2015;
+TRUNCATE acs.tableshells2017;
+----
+
+=== Reload the data
+[source,SQL]
+----
+\copy acs.tableshells2015 FROM 'ACS2015_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
+\copy acs.tableshells2017 FROM 'ACS2017_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
+----
+
+=== Drop rows with no tableid
+[source,SQL]
+----
+DELETE FROM acs.tableshells2017 WHERE tableid IS NULL;
+DELETE FROM acs.tableshells2015 WHERE tableid IS NULL;
+----
+
+=== Drop all data with uniqueid (to get table info)
+[source,SQL]
+----
+DELETE FROM acs.tableshells2015 WHERE uniqueid IS NOT NULL;
+DELETE FROM acs.tableshells2017 WHERE uniqueid IS NOT NULL;
+----
+
+=== Drop rows where text says "Universe:"
+[source,SQL]
+----
+DELETE FROM acs.tableshells2015 WHERE stub LIKE '%Universe:%';
+DELETE FROM acs.tableshells2017 WHERE stub LIKE '%Universe:%';
+----
+
+=== Drop where text is blank
+[source,SQL]
+----
+DELETE FROM acs.tableshells2015 WHERE stub IS NULL;
+DELETE FROM acs.tableshells2017 WHERE stub IS NULL;
+----
+
+=== Test that the tablenames haven't changed
+[source,SQL]
+----
+SELECT l.tableid, l.stub, r.stub 
+FROM acs.tableshells2015 l
+LEFT JOIN acs.tableshells2017 r
+ON l.tableid = r.tableid
+WHERE l.tableid in ('B02001', 'B22010', 'B25034', 'B09020', 'C17002', 'B11002', 'B25040', 'B25024', 'B25044', 'B11007', 'C21007', 'B16004', 'B19059', 'B17021', 'B19055', 'B19057', 'B19056', 'B19051', 'B03003', 'B25082') AND l.stub <> r.stub;
+----
+
+IMPORTANT: Check that the output here returns 0 rows. Also, consider removing the stub <> comparison to test the join.
+
+== Validate the Sequence and Offset Values
+
+=== TODO
