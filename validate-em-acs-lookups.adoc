@@ -1,6 +1,6 @@
 = Validate EM ACS Lookups
 :nofooter:
-:icons:
+:icons: font
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 link:index.html[Back to Main Page]
