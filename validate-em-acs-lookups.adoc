@@ -1,5 +1,6 @@
 = Validate EM ACS Lookups
 :nofooter:
+:icons:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 link:index.html[Back to Main Page]
@@ -78,7 +79,7 @@ l.stub <> r.stub;
 
 IMPORTANT: Check that the output here returns 0 rows. Also, consider removing the stub <> comparison to test the join.
 
-=== clear table
+=== Clear tables
 
 [source,SQL]
 ----
