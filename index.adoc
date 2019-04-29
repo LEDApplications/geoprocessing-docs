@@ -6,20 +6,22 @@ LEHD Geography Production Documents
 
 == LODES/OnTheMap
 
-link:lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
+link:lodes/lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
 
-link:lodes-geography.html[LODES/OnTheMap Public Doc]
+link:lodes/lodes-geography.html[LODES/OnTheMap Public Doc]
+
+=== Utilities
+
+link:lodes/lodes-to-pg.html[Load LODES data to Postgres]
 
 == QWI/QWIExplorer
 
-link:qwi-geography-sop.html[QWI/QWIExplorer Standard Operating Procedure]
+link:qwi/qwi-geography-sop.html[QWI/QWIExplorer Standard Operating Procedure]
 
-link:qwi-geography.html[QWI/QWIExplorer Public Doc]
+link:qwi/qwi-geography.html[QWI/QWIExplorer Public Doc]
 
 == OnTheMap for Emergency Management
 
-link:validate-em-acs-lookups.html[Validate EM ACS Table Lookups]
+link:acs/validate-em-acs-lookups.html[Validate EM ACS Table Lookups]
 
-== Utilities
 
-link:lodes-to-pg.html[Load LODES data to Postgres]

@@ -2,7 +2,7 @@
 :nofooter:
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
-link:index.html[Back to Main Page]
+link:../index.html[Back to Main Page]
 
 == Load RAC files into a Postgres database
 

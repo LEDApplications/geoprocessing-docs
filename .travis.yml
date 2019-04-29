@@ -13,7 +13,7 @@ before_install:
 
 script:
   - workdir=$(pwd)
-  - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -b html5 -a toc=left -a numbered -a outfilesuffix=.html *.adoc 
+  - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -b html5 -a toc=left -a numbered -a outfilesuffix=.html **/*.adoc 
 
 after_error: 
   - docker logs asciidoc-to-html
