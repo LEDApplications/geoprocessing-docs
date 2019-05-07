@@ -140,3 +140,104 @@ create the crosswalk
 time ./13_intptxwalk.bash xwalk
 ----
 // end::geo13[]
+
+// tag::geo14[]
+
+== CD Block Splits
+
+IMPORTANT: The crosswalk assigns higher level geographies based on the centermost face.
+Congressional districts get special handling because of their political import. 
+Geo produces a pdf file that specifies a handful of assignments that we use wholesale.
+
+WARNING: DO NOT USE THE FULL CSV FILE OF BLOCK ASSIGNMENTS
+
+Verify that this is the correct congress session, then download the 
+https://www2.census.gov/programs-surveys/decennial/rdo/mapping-files/2019/116-congressional-district-bef/CD116_BlockSplits.pdf[CD116 Block Splits] pdf file and convert to a csv of the form:
+
+[%header,format=csv]
+|===
+State Name, State Code, County Name, County Code, Tract Code, Block, CD's within Block, Data Tabulated to CD
+Kentucky,21,Harrison,097,950100,1068,"4,6",4
+Kentucky,21,Harrison,097,950100,1070,"4,6",4
+Kentucky,21,Harrison,097,950400,2024,"4,6",6
+Kentucky,21,Harrison,097,950400,2032,"4,6",6
+Kentucky,21,Jefferson,111,010316,1013,"3,4",4
+|===
+
+Use the following commands to load and patch the crosswalk with the updated congressional districts.
+
+[source,bash]
+----
+time ./14_assigncdxwalk.bash path/to/CD.csv
+----
+// end::geo14[]
+
+// tag::geo15otm[]
+== Create the formatted names
+
+Create the formatted names for all OnTheMap layers.
+
+[source,bash]
+----
+time ./15_createnames.bash otm
+----
+// end::geo15otm[]
+
+// tag::geo16[]
+== Assign exoids to layers
+
+Take the exoids from the crosswalk and update the references in each layer table
+
+[source,bash]
+----
+time ./16_assignexoid.bash all
+----
+// end::geo16[]
+
+// tag::geo17[]
+== Generate water mask
+
+Generate the coastal mask from the difference between the CBF and TIGER. 
+
+IMPORTANT: The CBF layer is hardcoded as it's not released on the same schedule as tiger.
+Verify the most recent CBF release and update the year reference in the program below if necessary.
+
+[source,bash]
+----
+time ./17_generatecbfwatermask.bash qwi 
+----
+// end::geo17[]
+
+// tag::geo18otm[]
+== Finalize the layer tables
+
+Create a final version of all polygon layer tables in the expected layout.
+
+[source,bash]
+----
+time ./18_finalizegeo.bash otm
+----
+// end::geo18otm[]
+
+// tag::geo19[]
+== Export the Crosswalk CSV
+
+Create a directory to store the final crosswalk csv and export all relevant columns.
+There are a few different versions of the crosswalk available. Choose as needed.
+
+[source,bash]
+----
+time ./19_exportxwalks.bash /some/folder blk_xwalk_wide
+----
+// end::geo19[]
+
+// tag::geo20[]
+== Create high, noncostal water reference
+
+This program creates the high level, low resolution water features for OnTheMap. This is a new layer that will be a mix of water and polygon features
+
+[source,bash]
+----
+time ./20_highlevelwater.bash highlevel
+----
+// end::geo20[]

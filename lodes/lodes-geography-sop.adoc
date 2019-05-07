@@ -70,13 +70,16 @@ include::../reference/geography.mdoc[tags=geo12]
 
 include::../reference/geography.mdoc[tags=geo13]
 
-== Get CD Block Splits PDF Data
+include::../reference/geography.mdoc[tags=geo14]
 
-IMPORTANT: The crosswalk assigns higher level geographies based on the centermost face.
-Congressional districts get special handling because of their political import. 
-Geo produces a pdf file that specifies a handful of assignments that we use wholesale.
+include::../reference/geography.mdoc[tags=geo15otm]
 
-WARNING: DO NOT USE THE FULL CSV FILE OF BLOCK ASSIGNMENTS
+include::../reference/geography.mdoc[tags=geo16]
 
-Verify that this is the correct congress session, then download the 
-https://www2.census.gov/programs-surveys/decennial/rdo/mapping-files/2019/116-congressional-district-bef/CD116_BlockSplits.pdf[CD116 Block Splits] pdf file and convert to a csv.
+include::../reference/geography.mdoc[tags=geo17]
+
+include::../reference/geography.mdoc[tags=geo18otm]
+
+include::../reference/geography.mdoc[tags=geo19]
+
+include::../reference/geography.mdoc[tags=geo20]
