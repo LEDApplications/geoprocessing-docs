@@ -24,4 +24,6 @@ link:qwi/qwi-geography.html[QWI/QWIExplorer Public Doc]
 
 link:acs/validate-em-acs-lookups.html[Validate EM ACS Table Lookups]
 
+== PSEO
 
+link:pseo/database-setup.html[PSEO Database Setup and Table Load]

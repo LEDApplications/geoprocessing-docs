@@ -172,17 +172,6 @@ time ./14_assigncdxwalk.bash path/to/CD.csv
 ----
 // end::geo14[]
 
-// tag::geo15otm[]
-== Create the formatted names
-
-Create the formatted names for all OnTheMap layers.
-
-[source,bash]
-----
-time ./15_createnames.bash otm
-----
-// end::geo15otm[]
-
 // tag::geo16[]
 == Assign exoids to layers
 
@@ -207,17 +196,6 @@ Verify the most recent CBF release and update the year reference in the program 
 time ./17_generatecbfwatermask.bash qwi 
 ----
 // end::geo17[]
-
-// tag::geo18otm[]
-== Finalize the layer tables
-
-Create a final version of all polygon layer tables in the expected layout.
-
-[source,bash]
-----
-time ./18_finalizegeo.bash otm
-----
-// end::geo18otm[]
 
 // tag::geo19[]
 == Export the Crosswalk CSV

@@ -72,14 +72,50 @@ include::../reference/geography.mdoc[tags=geo13]
 
 include::../reference/geography.mdoc[tags=geo14]
 
-include::../reference/geography.mdoc[tags=geo15otm]
+== Create the formatted names
+
+Create the formatted names for all OnTheMap layers.
+
+[source,bash]
+----
+time ./15_createnames.bash otm
+----
 
 include::../reference/geography.mdoc[tags=geo16]
 
 include::../reference/geography.mdoc[tags=geo17]
 
-include::../reference/geography.mdoc[tags=geo18otm]
+== Finalize the layer tables
+
+Create a final version of all polygon layer tables in the expected layout.
+
+[source,bash]
+----
+time ./18_finalizegeo.bash otm
+----
 
 include::../reference/geography.mdoc[tags=geo19]
 
 include::../reference/geography.mdoc[tags=geo20]
+
+== Load and project areawater files
+
+Unpack the areawater shapefiles
+
+[source,bash]
+----
+mkdir ~/workspace/postgis_tiger/areawaterfiles
+cd ~/workspace/postgis_tiger/areawaterfiles
+ln -s /data/production/prod/current/extiger/us/tl_2018*areawater*gz .
+gunzip *.gz -f
+cd ..
+----
+
+Load and project the areawater shapefiles in the water schema
+
+[source,bash]
+----
+time ./20_lowlevelwater.bash ~/workspace/postgis_tiger/areawaterfiles
+----
+
+== Manually create the intermediate water layer following the steps outlined in 21_manual_water_instructions.txt that is in the repository
