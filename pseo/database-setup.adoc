@@ -1,0 +1,17 @@
+= PSEO Database Setup and Table Load
+:nofooter:
+:icons: font
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:../index.html[Back to Main Page]
+
+== Install postgresql and nodejs
+
+Validate that postgresql and nodejs/npm are available to the application owner
+
+== Init the database
+
+[source,bash]
+----
+
+----
