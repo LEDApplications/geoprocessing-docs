@@ -129,7 +129,15 @@ Load the necessary polygons into the water schema:
 time ./22_midlevelwater.bash midlevel
 ----
 
-Then manually run the following sql commands 
+Then manually run the following sql commands. It may be beneficiary to split some of the 
+commands below into sql files and then run them in blocks since they can take a long time 
+to complete. For example, putting the create table commands in temp.sql:
+
+[source,bash]
+----
+psql -d otmgeo -f temp.sql
+----
+
 IMPORTANT: Replace the schemaprefix value as necessary (e.g. otm2018)
 
 [source,SQL]
