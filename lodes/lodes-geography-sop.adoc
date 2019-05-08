@@ -118,4 +118,79 @@ Load and project the areawater shapefiles in the water schema
 time ./20_lowlevelwater.bash ~/workspace/postgis_tiger/areawaterfiles
 ----
 
-== Manually create the intermediate water layer following the steps outlined in 21_manual_water_instructions.txt that is in the repository
+== Intermediate water layer
+
+Manually create the intermediate water layer following the steps outlined in 21_manual_water_instructions.txt that is in the repository. 
+
+Load the necessary polygons into the water schema:
+
+[source,bash]
+----
+time ./22_midlevelwater.bash midlevel
+----
+
+Then manually run the following sql commands 
+IMPORTANT: Replace the schemaprefix value as necessary (e.g. otm2018)
+
+[source,SQL]
+----
+CREATE TABLE otm2018water.testing_snap3 AS
+ SELECT (ST_Dump(ST_LineMerge(ST_SnapToGrid(ST_Union(the_geom),20)))).geom as the_geom
+ FROM otm2018water.coastline;
+
+CREATE TABLE otm2018water.testing_snap3_polys AS
+ SELECT ST_MakePolygon(the_geom)
+ FROM otm2018water.testing_snap3
+ WHERE ST_Isclosed(the_geom);
+
+CREATE TABLE otm2018water.testing_snap3_lines AS
+ SELECT (ST_Dump(ST_LineMerge(St_Union(the_geom)))).geom as the_geom
+ FROM otm2018water.testing_snap3
+ WHERE NOT ST_Isclosed(the_geom);
+
+CREATE TABLE otm2018water.testing_snap3_polys2 AS
+ SELECT ST_MakePolygon(the_geom)
+ FROM otm2018water.testing_snap3_lines
+ WHERE ST_Isclosed(the_geom);
+
+CREATE TABLE otm2018water.testing_snap3_lines2 AS
+ SELECT (ST_Dump(ST_LineMerge(St_Union(the_geom)))).geom as the_geom
+ FROM otm2018water.testing_snap3_lines
+ WHERE NOT ST_Isclosed(the_geom);
+
+CREATE TABLE otm2018water.testing_snap3_polys3 AS
+ SELECT ST_MakePolygon(the_geom)
+ FROM otm2018water.testing_snap3_lines2
+ WHERE ST_Isclosed(the_geom);
+ 
+CREATE TABLE otm2018water.testing_snap3_lines3 AS
+ SELECT (ST_Dump(ST_LineMerge(St_Union(the_geom)))).geom as the_geom
+ FROM otm2018water.testing_snap3_lines2
+ WHERE NOT ST_Isclosed(the_geom);
+
+CREATE TABLE otm2018water.coastline_polygons AS
+ SELECT * FROM otm2018water.testing_snap3_polys;
+
+INSERT INTO otm2018water.coastline_polygons
+ SELECT * FROM otm2018water.testing_snap3_polys2;
+
+INSERT INTO otm2018water.coastline_polygons
+ SELECT * FROM otm2018water.testing_snap3_polys3;
+ 
+DROP TABLE otm2018water.testing_snap3_polys3;
+DROP TABLE otm2018water.testing_snap3_polys2;
+DROP TABLE otm2018water.testing_snap3_polys;
+
+ALTER TABLE otm2018water.coastline_polygons
+ ADD COLUMN gid SERIAL PRIMARY KEY;
+
+CREATE TABLE water.coastline_lines AS
+ SELECT * otm2018water.testing_snap3_lines3;
+ 
+DROP TABLE otm2018water.testing_snap3_lines3;
+DROP TABLE otm2018water.testing_snap3_lines2;
+DROP TABLE otm2018water.testing_snap3_lines;
+
+ALTER TABLE otm2018water.coastline_lines
+ ADD COLUMN gid SERIAL PRIMARY KEY;
+----
