@@ -155,5 +155,12 @@ Run the following command to load the shapefile back into the database and to dr
 time ./22_midlevelwater_2.bash /path/to/intermediate_water.shp
 ----
 
+== Create the ancillary layers
 
+Open the bash program below and verify that all URLs listed near the top of the table are still available and the most recent. Once complete, process all layers.
+
+[source,bash]
+----
+time ./23_ancillarylayers.bash all
+----
 
