@@ -164,3 +164,15 @@ Open the bash program below and verify that all URLs listed near the top of the 
 time ./23_ancillarylayers.bash all
 ----
 
+:WARNING Check that all of the following tables appear in the landmarks schema. On occasion a filename changes which causes a failure in processing a layer
+
+. greenspace 
+. airport_area 
+. airport_point 
+. amtrak_stations 
+. rails 
+. univ_ccol 
+. nces_schools 
+. onestop
+
+
