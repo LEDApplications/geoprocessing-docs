@@ -192,8 +192,8 @@ DROP TABLE otm2018water.testing_snap3_polys;
 ALTER TABLE otm2018water.coastline_polygons
  ADD COLUMN gid SERIAL PRIMARY KEY;
 
-CREATE TABLE water.coastline_lines AS
- SELECT * otm2018water.testing_snap3_lines3;
+CREATE TABLE otm2018water.coastline_lines AS
+ SELECT * FROM otm2018water.testing_snap3_lines3;
  
 DROP TABLE otm2018water.testing_snap3_lines3;
 DROP TABLE otm2018water.testing_snap3_lines2;
