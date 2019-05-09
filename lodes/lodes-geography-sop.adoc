@@ -176,3 +176,11 @@ time ./23_ancillarylayers.bash all
 . onestop
 
 
+== Set table ownership
+
+Once all layers are complete, hand ownership of tables over to the otmgeo user
+
+[source,bash]
+----
+./00_setpermissions.bash
+----
