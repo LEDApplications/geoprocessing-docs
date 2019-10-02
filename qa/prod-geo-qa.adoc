@@ -7,18 +7,92 @@ link:../index.html[Back to Main Page]
 
 == Overview 
 
-Text overview
+This doc lays out the components that make up the LEHD geography infrastructure and QA system
 
 == Diagram
 
 [plantuml, diagram-classes, png]
 ....
-class BlockProcessor
-class DiagramBlock
-class DitaaBlock
-class PlantUmlBlock
+@startuml
 
-BlockProcessor <|-- DiagramBlock
-DiagramBlock <|-- DitaaBlock
-DiagramBlock <|-- PlantUmlBlock
+cloud {
+  [geo division] --> ftp
+  [geo division] --> dmsdelivery
+  [state input] --> wibdefinition
+}
+
+node "external process" {
+  [extiger] 
+  [exwib] 
+  [exgrf] 
+  [exmaf]
+}
+ 
+node "formatting process" {
+ [tiger] 
+ [wib] 
+ [grf] 
+ [maf]
+} 
+ 
+database "appgeo db" {
+ [shps]
+ [xwalks]
+ node "db qa" {
+  [module qa]
+ } 
+}
+
+node "inline qa" {
+ [tigerqa] 
+ [wibqa] 
+ [grfqa] 
+ [mafqa]
+} 
+
+node "non-pu process" {
+ [pubgeo]
+ [gal]
+} 
+
+node "pu process" {
+ [j2j]
+ [qwi]
+ [lodes]
+} 
+
+ftp --> [extiger]
+dmsdelivery --> [exgrf] 
+dmsdelivery --> [exmaf] 
+wibdefinition --> [exwib]
+
+[extiger] --> [tiger]
+[extiger] --> [shps]
+[extiger] --> [xwalks]
+[exwib] --> [shps]
+[exwib] --> [xwalks]
+[exwib] --> [wib]
+[exgrf] --> [grf]
+[exmaf] --> [maf]
+
+[tiger] --> [tigerqa]
+[wib] --> [wibqa]
+[grf] --> [grfqa]
+[maf] --> [mafqa]
+
+[shps] --> [module qa]
+[xwalks] --> [module qa]
+
+[wibqa] --> [pubgeo]
+[grfqa] --> [pubgeo]
+[tigerqa] --> [gal]
+[wibqa] --> [gal]
+[grfqa] --> [gal]
+[mafqa] --> [gal]
+
+[gal] --> [qwi]
+[pubgeo] --> [qwi]
+[module qa] --> [lodes]
+
+@enduml
 ....
