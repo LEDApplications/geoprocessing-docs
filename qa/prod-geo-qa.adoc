@@ -61,6 +61,12 @@ node "pu process" {
  [lodes]
 } 
 
+node "pu qa" {
+ [j2jqa]
+ [qwiqa]
+ [lodesqa]
+} 
+
 ftp --> [extiger]
 dmsdelivery --> [exgrf] 
 dmsdelivery --> [exmaf] 
@@ -93,6 +99,10 @@ wibdefinition --> [exwib]
 [gal] --> [qwi]
 [pubgeo] --> [qwi]
 [module qa] --> [lodes]
+
+[lodes] --> [lodesqa]
+[qwi] --> [qwiqa]
+[j2j] --> [j2jqa]
 
 @enduml
 ....
