@@ -182,12 +182,12 @@ node "formatting process" {
 database "appgeo db" {
  [shps]
  [xwalks]
- node "db qa" {
+ node "db qa" STYLE_MIDNIGHT_ACCENT {
   [module qa]
  } 
 }
 
-node "inline qa" {
+node "inline qa" STYLE_MIDNIGHT_ACCENT {
  [tigerqa] 
  [wibqa] 
  [grfqa] 
@@ -205,7 +205,7 @@ node "pu process" {
  [lodes]
 } 
 
-node "pu qa" {
+node "pu qa" STYLE_MIDNIGHT_ACCENT {
  [j2jqa]
  [qwiqa]
  [lodesqa]
