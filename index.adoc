@@ -30,4 +30,5 @@ link:pseo/database-setup.html[PSEO Database Setup and Table Load]
 
 == QA
 
-link:qa/prod-geo-qa.html[Production Geography QA]
+link:qa/prod-geo-setup.html[Production Geography Setup]
+link:qa/prod-geo-qa.html[Production Geography QA]link:qa/prod-geo-unittest.html[Production Geography Unit Testing]
