@@ -1,0 +1,209 @@
+= Prod Geography Unit Testing
+:nofooter:
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:../index.html[Back To Main Page]
+
+= User Guide
+
+== Overview
+This guide aims to overview how the geography unit testing framework runs and how to create and use unit tests.
+
+A document detailing basic configuration of the dtabase can be found link:./prod-geo-setup.html[here].
+
+== Tools
+=== PostgreSQL
+The version of postgresql avialable internally within the Bureau is 8.4.20 as of this writing. Hostility towards non-oracle, non-mysql databases from software approval groups within the bureau prevent newer versions from being implemented. 
+
+=== PostGIS
+Postgis 1.5 was installed as it was the only source available and is compatibile with Postgres 8.4.
+
+=== PGUnit
+PGUnit is a 10+ year old framework for writing and running unit tests in PostgreSQL. More modern solutions area available but due to software restrictions imposed by the SWG we're restricted to using an ancient version of PostgreSQL on the lehd2 cluster. PGUnit was chosen because it was written/designed for the available postgres version on hand.
+
+From the original documentation:
+
+==== What is PGUnit?
+PGUnit is a xUnit-style framework for stored procedures in PostgreSQL 8.3+. It allows database developers to write automated tests for existed stored procedures or develop procedures using concepts of Test Driven Development (TDD). All test cases are stored in the database, so you don't need any external resources (like files, version control, command-line utilities etc.) to save tests.
+
+As in traditional xUnit, tests may be grouped in test case; each test-case may have its own environment initialization code ("fixture preparation code", or setUp block). The main benefit of PGUnit is that setUp block (usually quite CPU intensive) is executed only once, and its effect is stored in a savepoint. Then, all tests are executed from that savepoint, so the fixture initialization overheat is minimal. All tests are still executed independently, because their effects are automatically rolled back after the execution.
+
+Download: http://pgfoundry.org/frs/download.php/1983/dklab_pgunit_2008-11-09.sql[dklab_pgunit_2008-11-09.sql]
+
+== Configuration
+=== Constants
+A single file, *00_setenvvars.bash*, contains the full set of constants needed for any modules or unit tests. This script is run in each module and sets some standard constants such as:
+[source, bash]
+----
+dbname=otmgeo
+dbusername=*your username here*
+dbport=5432
+congresssession=116
+acsdatayear=2016
+tigeryear=2018
+schemaprefix=*a custom prefix for the data vintage*
+----
+
+==== Schema Prefix
+Setting a schema prefix allows multiple vintages to live beside each other in the database. For example, the following shows that we're currently storing final versions of the data for an em patch, the OnTheMap 2018 vintage, and QWI 2018 vintage. 
+[source, sql]
+----
+otmgeo=> \dn
+        List of schemas
+        Name        |  Owner
+--------------------+----------
+ otm2018final       | otmgeo
+ patchemfinal       | otmgeo
+ qwi2018r1final     | otmgeo
+----
+
+=== Module
+At the end of each module a single line indicates which qa test script should be run. This script contains all unit tests corresponding to the current module. 
+
+===== For example, the module:
+[source]
+----
+01_facesloader.bash 
+----
+
+===== runs the following qa script
+[source]
+----
+./01_facesloader_qa.bash run
+----
+
+=== Unit Test
+==== Documentation Block
+The unit tests contain a documentation block at the top that can be mostly ignored or minorly edited. It provides instructions for how to run each unit test and what arguments are expected. For example:
+
+===== Short help
+[source, bash]
+----
+$ ./01_facesloader_qa.bash
+Usage:
+./01_facesloader_qa.bash <run|print|help>
+----
+
+===== Full help
+[source, bash]
+----
+$ ./01_facesloader_qa.bash help
+
+ SYNOPSIS
+    ./01_facesloader_qa.bash <run|print|help>
+
+ DESCRIPTION
+    This program creates and runs the unit tests for the module.
+    Multiple unit tests must be separated by commas. All other
+    commands are separated by a newline for clarity.
+
+ OPTIONS
+    help          Print the extended help
+    print         Print unit tests to console
+    run           Run unit tests
+
+ EXAMPLES
+    01_facesloader_qa.bash run
+    01_facesloader_qa.bash print
+----
+
+==== Load Constants and Unit modules
+At the end of the header the unit test module begins by loading the necessary components. For example:
+
+===== Load the constants
+[source, bash]
+----
+#set environment variables (dbname dbusername dbport schemaprefix)
+source ./00_setenvvars.bash
+----
+In this case, the only expected constants are the dbname, dbusername, dbport and schemaprefix. They can be called as variables after this statement.
+
+===== Load the unit tests
+[source, bash]
+----
+#import the test modules used
+source ./unit_tests/setup.bash
+source ./unit_tests/table_exists.bash
+----
+These steps load the needed unit tests for this module. In this case, all that's happening is that the setup functions are made available, and that a single test to check for a table's existence is loaded
+
+==== Set the test module name and generate the sql
+[source, bash]
+----
+# name the test suite
+suitename=test_01_facesloader
+
+# create the unit test sql
+read -r -d '' testsuitesql <<SQL >/dev/null
+$(start_unit $suitename)
+$(table_exists test1 'table exists' ${schemaprefix}public faces),
+$(table_exists test2 'table exists' ${schemaprefix}public facesah)
+$(end_unit)
+SQL
+----
+This block creates a sql function called *test_01_facesloader* which runs two tests - a check that the faces table exists and the facesah table exists in the prefixed schema. The two lines above call a function called *table_exists* with 4 arguments.
+
+The argument order may seem confusing but can be viewed in the source code for the unit test itself. For example:
+[source, bash]
+----
+$ head unit_tests/table_exists.bash
+
+#!/bin/bash
+
+table_exists() {
+label=$1
+description=$2
+schema=$3
+table=$4
+...
+----
+
+==== Print the Unit Tests
+Calling the unit test with the *print* argument will display the full sql function as seen by the database. This can be useful for testing and debuging. For example:
+
+[source, bash]
+----
+> ./01_facesloader_qa.bash print
+
+CREATE OR REPLACE FUNCTION pgunit.test_01_facesloader()
+  RETURNS pgunit.testfunc[]
+AS
+$body$
+  SELECT pgunit.testcase(
+...
+----
+
+==== Run the Unit Tests
+Calling the unit test with the *run* argument will send the function to the database and run it as a unit test on the data from the associated module. The output of those unit tests will be displayed back to the user upon completion. For example:
+
+[source, bash]
+----
+> ./01_facesloader_qa.bash run
+
+CREATE FUNCTION
+NOTICE:  *^*^*^*^*^
+NOTICE:
+NOTICE:  PostgreSQL Unit Tests (PGUnit)
+NOTICE:
+NOTICE:  pgunit.test_01_facesloader
+NOTICE:    - OK setUp (12 ms)
+NOTICE:    ! FAIL test1 (otm2018public.faces) table exists (5 ms)
+NOTICE:    ! FAIL test2 (otm2018public.facesah) table exists (1 ms)
+NOTICE:
+NOTICE:  Time: 00:00:00
+----
+
+In the above block, the function was created and ran against the current database. Both tests report as failed because the data from the otm2018public schema doesn't exist anymore. This only serves to demonstrate what to expect when running the unit test frameworks.
+
+== Future
+Unit tests are stored in a directory called unit_tests/ and are designed for reuseability. As of this writing there are only 4 existing tests. There will be more as progress continues.
+
+[source, bash]
+----
+$ ls unit_tests/
+
+does_not_exist_where.bash  
+geometry_is.bash  
+setup.bash  
+table_exists.bash
+----

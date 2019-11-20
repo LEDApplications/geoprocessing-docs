@@ -1,0 +1,124 @@
+= Prod Geography Postgres & PGUnit Setup
+:nofooter:
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:../index.html[Back To Main Page]
+
+== Overview
+This document is a running list of how the production geo database was configured initially. These steps and rules may no longer apply but still serve as guidance on the basic configuration of the postgis database and pgunit test suite. See other documentation for more current references. 
+
+=== Postgres notes:
+For most kinds of objects, the initial state is that only the owner (or a superuser) can do anything with the object. To allow other roles to use it, privileges must be granted. There are several different kinds of privilege: SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER, CREATE, CONNECT, TEMPORARY, EXECUTE, and USAGE. For more information on the different types of privileges supported by PostgreSQL, see the GRANT reference page.
+
+=== Commands:
+Creating the otmgeo role to hold all the permissons for the otmgeo process. Individual users can be granted this role for permissions. E.g.:
+[source,sql]
+----
+postgres=# CREATE USER hoons001;
+CREATE ROLE
+postgres=# GRANT otmgeo TO hoons001;
+GRANT ROLE
+----
+
+Command line users can then psql without specifying the username:
+[source,bash]
+----
+$ psql -d databasename
+----
+
+*ALL USERS MUST SET ROLE to OTMGEO prior to performing any actions from their personal user*
+
+e.x. as hoons001
+[source,bash]
+----
+$ psql -d otmgeo
+=> SET ROLE otmgeo;
+Do some stuff
+----
+
+OTHERWISE LOGIN TO THE OTMGEO USER
+[source,sql]
+----
+ALTER USER otmgeo WITH PASSWORD 'OnTheMapGeo';
+----
+
+
+Need to adjust permissions so that the otmgeo user can be passworded into:
+[source,sql]
+----
+postgres=# SHOW hba_file;
+            hba_file             
+/var/lib/pgsql/data/pg_hba.conf
+----
+
+
+==== Edit the conf file to allow for otmgeo connections via password
+[source]
+----
+# "local" is for Unix domain socket connections only
+local   otmgeo      otmgeo                            password
+local   all         all                               ident
+----
+
+==== reload postgres
+[source,bash]
+----
+$ sudo su - postgres
+$ pg_ctl -D /var/lib/pgsql/data reload # OLD DATA LOCATION SEE BELOW
+$ logout
+----
+
+
+==== connect to user/db from personal user
+create a ~/.pgpass file give it the following info
+[source]
+----
+lehd2-4.rm.census.gov:5432:otmgeo:otmgeo:OnTheMapGeo
+----
+
+
+==== create a postgis db (otmgeo) - 
+http://postgis.net/docs/manual-1.5/ch02.html#id354505
+[source,bash]
+----
+$ sudo su - postgres 
+$ cd /usr/share/pgsql/contrib
+$ psql -d otmgeo -f postgis-64.sql
+$ cd postgis-1.5
+$ psql -d otmgeo -f spatial_ref_sys.sql
+----
+Repeat this for any other spatial dbs
+
+==== Load shp or dbf files to postgres
+Current work on loading the files into the db can be found on lehd2-4 under
+/programs/projects/hoons001/workspace/postgis_tiger
+
+==== TODO Add files to VC
+Once the scripts are in a working state they will be put under git or svn and placed in a common location. 
+
+=== Start postgres service if not running
+[source,bash]
+----
+pg_ctl -D /data3/pgsql/pgsql/data start
+----
+
+==== Changing postgres port
+[source,bash]
+----
+cd /data3/pgsql/pgsql/data
+vi postgresql.conf
+----
+Edit port then reload pg_ctl
+
+==== Load pgunit testing sql and set search path
+Using the pgunit basic unit testing framework - http://en.dklab.ru/lib/dklab_pgunit/
+
+Script was given minor edits and commented out example unit tests.
+[source,bash]
+----
+psql -d otmgeo -f pgunit_edited.sql
+Set search path of database:
+Psql -d otmgeo
+show search_path;
+ALTER DATABASE otmgeo SET search_path TO *CURRENT PATH MEMBERS*, pgunit;
+----
