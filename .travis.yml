@@ -13,7 +13,7 @@ before_install:
 
 script:
   - workdir=$(pwd)
-  - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -b html5 -a toc=left -a numbered -a outfilesuffix=.html *-a stylesheet=colony.css .adoc
+  - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -b html5 -a toc=left -a numbered -a outfilesuffix=.html -a stylesheet=colony.css *.adoc
   - docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -b html5 -a toc -a numbered -a outfilesuffix=.html -a stylesheet=colony.css **/*.adoc 
 
 after_error: 
