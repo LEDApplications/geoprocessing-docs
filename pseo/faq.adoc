@@ -7,8 +7,11 @@ link:../index.html[Back To Main Page]
 == Overview
 This document is a running list of FAQs for PSEO
 
+=== Noise Infusion
+
 [qanda]
-What is Asciidoctor?::
-  An implementation of the AsciiDoc processor in Ruby.
+How can we tell real trends in the data vs noise infusion?::
+  Small numbers are more likely to be noise infusion - in very small cells, the proportion of a cell that is noise is larger. All cells, including zeroes, have some level of noise infusion in them. In the data, a cell with a true count of 0 graduates could end up displaying a handful of grads. This is unlikely but not impossible.
+
 What is the answer to the Ultimate Question?:: 42
 
