@@ -4,34 +4,26 @@ Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 LEHD Geography Production Documents
 
+== QA
+* link:qa/prod-geo-setup.html[Production Geography Setup]
+* link:qa/prod-geo-qa.html[Production Geography QA]
+* link:qa/prod-geo-unittest.html[Production Geography Unit Testing]
+
 == LODES/OnTheMap
-
-link:lodes/lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
-
-link:lodes/lodes-geography.html[LODES/OnTheMap Public Doc]
-
-=== Utilities
-
-link:lodes/lodes-to-pg.html[Load LODES data to Postgres]
+* link:lodes/lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
+* link:lodes/lodes-geography.html[LODES/OnTheMap Public Doc]
+* link:lodes/faq.html[PSEO FAQ]
 
 == QWI/QWIExplorer
-
-link:qwi/qwi-geography-sop.html[QWI/QWIExplorer Standard Operating Procedure]
-
-link:qwi/qwi-geography.html[QWI/QWIExplorer Public Doc]
+* link:qwi/qwi-geography-sop.html[QWI/QWIExplorer Standard Operating Procedure]
+* link:qwi/qwi-geography.html[QWI/QWIExplorer Public Doc]
 
 == OnTheMap for Emergency Management
-
-link:acs/validate-em-acs-lookups.html[Validate EM ACS Table Lookups]
+* link:acs/validate-em-acs-lookups.html[Validate EM ACS Table Lookups]
 
 == PSEO
+* link:pseo/database-setup.html[PSEO Database Setup and Table Load]
+* link:pseo/faq.html[PSEO FAQ]
 
-link:pseo/database-setup.html[PSEO Database Setup and Table Load]
-
-== QA
-
-link:qa/prod-geo-setup.html[Production Geography Setup]
-
-link:qa/prod-geo-qa.html[Production Geography QA]
-
-link:qa/prod-geo-unittest.html[Production Geography Unit Testing]
+== Utilities
+* link:lodes/lodes-to-pg.html[Load LODES data to Postgres]
