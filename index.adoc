@@ -12,7 +12,7 @@ LEHD Geography Production Documents
 == LODES/OnTheMap
 * link:lodes/lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
 * link:lodes/lodes-geography.html[LODES/OnTheMap Public Doc]
-* link:lodes/faq.html[PSEO FAQ]
+* link:lodes/faq.html[FAQ]
 
 == QWI/QWIExplorer
 * link:qwi/qwi-geography-sop.html[QWI/QWIExplorer Standard Operating Procedure]
@@ -23,7 +23,7 @@ LEHD Geography Production Documents
 
 == PSEO
 * link:pseo/database-setup.html[PSEO Database Setup and Table Load]
-* link:pseo/faq.html[PSEO FAQ]
+* link:pseo/faq.html[FAQ]
 
 == Utilities
 * link:lodes/lodes-to-pg.html[Load LODES data to Postgres]

@@ -4,8 +4,7 @@ Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 link:../index.html[Back To Main Page]
 
-= User Guide
-
+== User Guide
 == Overview
 This guide aims to overview how the geography unit testing framework runs and how to create and use unit tests.
 
@@ -57,7 +56,7 @@ otmgeo=> \dn
  qwi2018r1final     | otmgeo
 ----
 
-=== Module
+==== Module
 At the end of each module a single line indicates which qa test script should be run. This script contains all unit tests corresponding to the current module. 
 
 ===== For example, the module:
