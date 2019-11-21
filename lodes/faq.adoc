@@ -7,6 +7,6 @@ link:../index.html[Back To Main Page]
 == Overview
 This document is a running list of FAQs for LODES/OnTheMap 
 
-=== Life, the Universe and Everything
+== Life, the Universe and Everything
 [qanda]
 What is the answer to the Ultimate Question?:: 42
