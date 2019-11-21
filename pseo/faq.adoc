@@ -1,0 +1,14 @@
+= Prod Geography Postgres & PGUnit Setup
+:nofooter:
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:../index.html[Back To Main Page]
+
+== Overview
+This document is a running list of how the production geo database was configured initially. These steps and rules may no longer apply but still serve as guidance on the basic configuration of the postgis database and pgunit test suite. See other documentation for more current references. 
+
+[qanda]
+What is Asciidoctor?::
+  An implementation of the AsciiDoc processor in Ruby.
+What is the answer to the Ultimate Question?:: 42
+
