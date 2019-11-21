@@ -14,7 +14,7 @@ before_install:
 script:
   
   - workdir=$(pwd)
-  - docker run asciidoctor/docker-asciidoctor /bin/bash -c "gem install rdoc && \
+  - docker run asciidoctor/docker-asciidoctor /bin/bash -c "gem install rdoc; \
       gem install bundler && \
       apk add git && \
       git clone https://github.com/asciidoctor/asciidoctor-stylesheet-factory.git && \
