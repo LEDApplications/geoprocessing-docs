@@ -7,7 +7,6 @@ link:../index.html[Back To Main Page]
 == Overview
 This document is a running list of FAQs for LODES/OnTheMap 
 
+=== Life, the Universe and Everything
 [qanda]
-What is Asciidoctor?::
-  An implementation of the AsciiDoc processor in Ruby.
 What is the answer to the Ultimate Question?:: 42
