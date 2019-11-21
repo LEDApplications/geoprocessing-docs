@@ -12,20 +12,9 @@ before_install:
   - docker pull asciidoctor/docker-asciidoctor
 
 script:
-  
   - workdir=$(pwd)
-  - docker run asciidoctor/docker-asciidoctor /bin/bash -c "gem install rdoc; \
-      gem install bundler && \
-      apk add git && \
-      git clone https://github.com/asciidoctor/asciidoctor-stylesheet-factory.git && \
-      cd asciidoctor-stylesheet-factory/ && \
-      bundle install && \
-      compass compile && \
-      mv stylesheets/ .. && \
-      cd .. && \
-      rm -rf rm -rf asciidoctor-stylesheet-factory/"
-  - docker run $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -b html5 -a toc=left -a numbered -a outfilesuffix=.html -a stylesheet=stylesheets/colony.css *.adoc
-  - docker run $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -b html5 -a toc -a numbered -a outfilesuffix=.html -a stylesheet=stylesheets/colony.css **/*.adoc 
+  - docker run $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -b html5 -a toc=left -a numbered -a outfilesuffix=.html -a stylesheet=colony.css *.adoc
+  - docker run $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -b html5 -a toc -a numbered -a outfilesuffix=.html -a stylesheet=colony.css **/*.adoc 
 
 after_error: 
   - docker logs asciidoc-to-html
@@ -38,8 +27,7 @@ after_success:
   - git rm *.md
   - git rm *.adoc **/*.adoc
   - git rm *.mdoc **/*.mdoc
-  - git rm *.css **/*.css
-  - git rm stylesheets/
+  - git rm *.css
 
 deploy:
   - provider: pages
