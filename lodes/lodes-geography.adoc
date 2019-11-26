@@ -1,5 +1,6 @@
 = LODES/OnTheMap Public Doc
 :nofooter:
+:source-highlighter: highlightjs
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 link:../index.html[Back To Main Page]

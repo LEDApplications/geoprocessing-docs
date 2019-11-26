@@ -1,6 +1,7 @@
 = PSEO Database Setup and Table Load
 :nofooter:
 :icons: font
+:source-highlighter: highlightjs
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 link:../index.html[Back to Main Page]

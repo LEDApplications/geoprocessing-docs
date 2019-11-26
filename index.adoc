@@ -1,5 +1,6 @@
 = Geoprocessing-docs
 :nofooter:
+:source-highlighter: highlightjs
 Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 LEHD Geography Production Documents
