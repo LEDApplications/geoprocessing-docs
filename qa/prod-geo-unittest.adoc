@@ -195,15 +195,136 @@ NOTICE:  Time: 00:00:00
 
 In the above block, the function was created and ran against the current database. Both tests report as failed because the data from the otm2018public schema doesn't exist anymore. This only serves to demonstrate what to expect when running the unit test frameworks.
 
-== Future
-Unit tests are stored in a directory called unit_tests/ and are designed for reuseability. As of this writing there are only 4 existing tests. There will be more as progress continues.
+== Tests
 
+Unit tests are stored in a directory called unit_tests/ and are designed for reuseability. *Arguments below begin at index 1* since, in bash, index 0 would reference the caller.
+
+=== Start and End
+All unit test blocks begin with a `start_unit` call and end with a `end_unit` call. The name of the set of tests is passed to the start module so that results can be recalled at a later date without needing to run the suite again.
 [source, bash]
 ----
-$ ls unit_tests/
-
-does_not_exist_where.bash  
-geometry_is.bash  
-setup.bash  
-table_exists.bash
+$(start_unit $suitename)
+*UNIT TESTS HERE*
+$(end_unit)
 ----
+
+=== Table Existence
+This test determines whether a table exists in the database.
+[cols="1,2,5", options="header"] 
+.table_exists.bash arguments
+|===
+|Order
+|Name
+|Description
+
+|1
+|label
+|A high level label given as reference (e.g. test1)
+
+|2
+|description
+|A text based explanation of what the test accomplishes
+
+|3
+|schema
+|The table schema to be checked (can include $variables)
+
+|4
+|table
+|The table name to be checked (can include $variables)
+|===
+
+=== Geometry Type
+This test determines whether a column matches an expected postgis geometry type.
+[cols="1,2,5", options="header"] 
+.geometry_is.bash arguments
+|===
+|Order
+|Name
+|Description
+
+|1
+|label
+|A high level label given as reference (e.g. test1)
+
+|2
+|description
+|A text based explanation of what the test accomplishes
+
+|3
+|schema
+|The table schema to be checked (can include $variables)
+
+|4
+|table
+|The table name to be checked (can include $variables)
+
+|5
+|geomtype
+|The geometry type to be validated via ST_GeometryType()
+|===
+
+=== Where does not exist
+This test determines whether there are any occurrences of a given where case.
+
+[cols="1,2,5", options="header"] 
+.count_does_not_exist.bash arguments
+|===
+|Order
+|Name
+|Description
+
+|1
+|label
+|A high level label given as reference (e.g. test1)
+
+|2
+|description
+|A text based explanation of what the test accomplishes
+
+|3
+|schema
+|The table schema to be checked (can include $variables)
+
+|4
+|table
+|The table name to be checked (can include $variables)
+
+|5
+|wherecase
+|A SQL statement to be passed to the where clause
+|===
+
+=== Counts are equal between two tables
+This test compares two tables or select statements and determines if the counts of the same variable are identical.
+
+[cols="1,2,5", options="header"] 
+.count_is_equal_where.bash arguments
+|===
+|Order
+|Name
+|Description
+
+|1
+|label
+|A high level label given as reference (e.g. test1)
+
+|2
+|description
+|A text based explanation of what the test accomplishes
+
+|3
+|tobecounted
+|The variable to be compared (e.x. '*' or 'distinct col')
+
+|4
+|firstselection
+|A SQL statement or schema.table passed to the FROM clause
+
+|5
+|secondselection
+|A SQL statement or schema.table passed to the FROM clause
+|===
+
+== Future
+More tests are being added as the use case is needed
