@@ -236,6 +236,7 @@ This test determines whether a table exists in the database.
 .Example
 [source, bash]
 ----
+source ./unit_tests/table_exists.bash
 $(table_exists test1 'public.faces exists' public faces),
 ----
 
@@ -271,6 +272,7 @@ This test determines whether a column matches an expected postgis geometry type.
 .Example
 [source, bash]
 ----
+source ./unit_tests/geometry_is.bash
 $(geometry_is test15 'working.pointlm is type point' working pointlm ST_Point),
 ----
 
@@ -307,6 +309,7 @@ This test determines whether there are any occurrences of a given where case.
 .Example
 [source, bash]
 ----
+source ./unit_tests/does_not_exist_where.bash
 $(does_not_exist_where test1 'no undefined sldls in working.sldl' working sldl "sldlst like 'Z%'"),
 ----
 
@@ -343,7 +346,8 @@ This test compares two tables or select statements and determines if the counts 
 .Example
 [source, bash]
 ----
-count_is_equal_where test1 'count of distinct stfids match' 'distinct stfid' "public.facesxwalk" "working.block_xwalk_intpt")
+source ./unit_tests/count_is_equal_where.bash
+$(count_is_equal_where test1 'count of distinct stfids match' 'distinct stfid' "public.facesxwalk" "working.block_xwalk_intpt")
 ----
 
 === Is equal to value
@@ -383,6 +387,7 @@ This test compares an input value against a simple select statement from a given
 .Example
 [source, bash]
 ----
+source ./unit_tests/is_equal_to.bash
 $(is_equal_to test1 'all stfid of length 15 in working.cd_assignments' working cd_assignments 15 "DISTINCT char_length(stfid)")
 ----
 
@@ -424,6 +429,12 @@ This test compares an input value against a simple select statement from a given
 |where
 |The SQL statement to be passed to the where clause
 |===
+.Example
+[source, bash]
+----
+source ./unit_tests/is_equal_to_where.bash
+$(is_equal_to_where test1 'all stfid of length 15 in working.cd_assignments in state 01' working cd_assignments 15 "char_length(stfid)" "st='01'")
+----
 
 
 === Is equal to value where (multiple tables)
@@ -463,6 +474,7 @@ This test compares an input value against a select statement with a from and whe
 .Example
 [source, bash]
 ----
+source ./unit_tests/is_equal_to_where_multi.bash
 $(is_equal_to_where_multi test1 'at least one cd assignment updated' true 1 "working.block_xwalk_intpt AS main, public.facesxwalk AS sub" "main.stfid = sub.stfid AND main.stcd${congresssession} <> sub.stcd${congresssession}")
 ----
 
