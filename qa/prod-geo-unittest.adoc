@@ -219,11 +219,11 @@ This test determines whether a table exists in the database.
 
 |1
 |label
-|A high level label given as reference (e.g. test1)
+|The high level label given as reference (e.g. test1)
 
 |2
 |description
-|A text based explanation of what the test accomplishes
+|The text based explanation of what the test accomplishes
 
 |3
 |schema
@@ -233,6 +233,11 @@ This test determines whether a table exists in the database.
 |table
 |The table name to be checked (can include $variables)
 |===
+.Example
+[source, bash]
+----
+$(table_exists test1 'public.faces exists' public faces),
+----
 
 === Geometry Type
 This test determines whether a column matches an expected postgis geometry type.
@@ -245,11 +250,11 @@ This test determines whether a column matches an expected postgis geometry type.
 
 |1
 |label
-|A high level label given as reference (e.g. test1)
+|The high level label given as reference (e.g. test1)
 
 |2
 |description
-|A text based explanation of what the test accomplishes
+|The text based explanation of what the test accomplishes
 
 |3
 |schema
@@ -263,12 +268,17 @@ This test determines whether a column matches an expected postgis geometry type.
 |geomtype
 |The geometry type to be validated via ST_GeometryType()
 |===
+.Example
+[source, bash]
+----
+$(geometry_is test15 'working.pointlm is type point' working pointlm ST_Point),
+----
 
 === Where does not exist
 This test determines whether there are any occurrences of a given where case.
 
 [cols="1,2,5", options="header"] 
-.count_does_not_exist.bash arguments
+.does_not_exist_where.bash arguments
 |===
 |Order
 |Name
@@ -276,11 +286,11 @@ This test determines whether there are any occurrences of a given where case.
 
 |1
 |label
-|A high level label given as reference (e.g. test1)
+|The high level label given as reference (e.g. test1)
 
 |2
 |description
-|A text based explanation of what the test accomplishes
+|The text based explanation of what the test accomplishes
 
 |3
 |schema
@@ -291,9 +301,14 @@ This test determines whether there are any occurrences of a given where case.
 |The table name to be checked (can include $variables)
 
 |5
-|wherecase
-|A SQL statement to be passed to the where clause
+|where
+|The SQL statement to be passed to the where clause
 |===
+.Example
+[source, bash]
+----
+$(does_not_exist_where test1 'no undefined sldls in working.sldl' working sldl "sldlst like 'Z%'"),
+----
 
 === Counts are equal between two tables
 This test compares two tables or select statements and determines if the counts of the same variable are identical.
@@ -307,11 +322,11 @@ This test compares two tables or select statements and determines if the counts 
 
 |1
 |label
-|A high level label given as reference (e.g. test1)
+|The high level label given as reference (e.g. test1)
 
 |2
 |description
-|A text based explanation of what the test accomplishes
+|The text based explanation of what the test accomplishes
 
 |3
 |tobecounted
@@ -319,12 +334,138 @@ This test compares two tables or select statements and determines if the counts 
 
 |4
 |firstselection
-|A SQL statement or schema.table passed to the FROM clause
+|The SQL statement or schema.table passed to the FROM clause
 
 |5
 |secondselection
-|A SQL statement or schema.table passed to the FROM clause
+|the SQL statement or schema.table passed to the FROM clause
 |===
+.Example
+[source, bash]
+----
+count_is_equal_where test1 'count of distinct stfids match' 'distinct stfid' "public.facesxwalk" "working.block_xwalk_intpt")
+----
+
+=== Is equal to value
+This test compares an input value against a simple select statement from a given table
+
+[cols="1,2,5", options="header"] 
+.is_equal_to.bash arguments
+|===
+|Order
+|Name
+|Description
+
+|1
+|label
+|The high level label given as reference (e.g. test1)
+
+|2
+|description
+|The text based explanation of what the test accomplishes
+
+|3
+|schema
+|The table schema to be checked (can include $variables)
+
+|4
+|table
+|The table name to be checked (can include $variables)
+
+|5
+|value
+|The value to be compared
+
+|6
+|select
+|The SQL to be passed to the select statement
+|===
+.Example
+[source, bash]
+----
+$(is_equal_to test1 'all stfid of length 15 in working.cd_assignments' working cd_assignments 15 "DISTINCT char_length(stfid)")
+----
+
+=== Is equal to value where
+This test compares an input value against a simple select statement from a given table with an additional where clause
+
+[cols="1,2,5", options="header"] 
+.is_equal_to_where.bash arguments
+|===
+|Order
+|Name
+|Description
+
+|1
+|label
+|The high level label given as reference (e.g. test1)
+
+|2
+|description
+|The text based explanation of what the test accomplishes
+
+|3
+|schema
+|The table schema to be checked (can include $variables)
+
+|4
+|table
+|The table name to be checked (can include $variables)
+
+|5
+|value
+|The value to be compared
+
+|6
+|select
+|The SQL to be passed to the select statement
+
+|7
+|where
+|The SQL statement to be passed to the where clause
+|===
+
+
+=== Is equal to value where (multiple tables)
+This test compares an input value against a select statement with a from and where variable
+
+[cols="1,2,5", options="header"] 
+.is_equal_to_where_multi.bash arguments
+|===
+|Order
+|Name
+|Description
+
+|1
+|label
+|The high level label given as reference (e.g. test1)
+
+|2
+|description
+|the text based explanation of what the test accomplishes
+
+|3
+|value
+|The value to be compared
+
+|4
+|select
+|The SQL to be passed to the select statement
+
+|5
+|from
+|The SQL statement to be passed to the from clause
+
+|6
+|where
+|The SQL statement to be passed to the where clause
+|===
+.Example
+[source, bash]
+----
+$(is_equal_to_where_multi test1 'at least one cd assignment updated' true 1 "working.block_xwalk_intpt AS main, public.facesxwalk AS sub" "main.stfid = sub.stfid AND main.stcd${congresssession} <> sub.stcd${congresssession}")
+----
+
 
 == Future
 More tests are being added as the use case is needed
