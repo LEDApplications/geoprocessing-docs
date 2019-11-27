@@ -475,7 +475,7 @@ This test compares an input value against a select statement with a from and whe
 [source, bash]
 ----
 source ./unit_tests/is_equal_to_where_multi.bash
-$(is_equal_to_where_multi test1 'at least one cd assignment updated' true 1 "working.block_xwalk_intpt AS main, public.facesxwalk AS sub" "main.stfid = sub.stfid AND main.stcd${congresssession} <> sub.stcd${congresssession}")
+$(is_equal_to_where_multi test1 'at least one cd assignment updated' true 1 "working.block_xwalk_intpt AS main, public.facesxwalk AS sub" "main.stfid = sub.stfid AND main.stcd115 <> sub.stcd115")
 ----
 
 
