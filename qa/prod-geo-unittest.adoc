@@ -248,6 +248,50 @@ $(end_unit)
 SQL
 ----
 
+=== Column Existence
+This test determines whether a column exists within a table.
+[cols="1,2,5", options="header"] 
+.table_exists.bash arguments
+|===
+|Order
+|Name
+|Description
+
+|1
+|label
+|The high level label given as reference (e.g. test1)
+
+|2
+|description
+|The text based explanation of what the test accomplishes
+
+|3
+|schema
+|The table schema to be checked (can include $variables)
+
+|4
+|table
+|The table name to be checked (can include $variables)
+
+|5
+|column
+|The column name to be checked (can include $variables)
+|===
+.Example
+[source, bash]
+----
+#import the test modules used
+source ./unit_tests/setup.bash
+source ./unit_tests/column_exists.bash
+
+# create the unit test sql
+read -r -d '' testsuitesql <<SQL >/dev/null
+$(start_unit $suitename)
+$(column_exists test1 'exo_id column exists' working aiannh exo_id)
+$(end_unit)
+SQL
+----
+
 === Geometry Type
 This test determines whether a column matches an expected postgis geometry type.
 [cols="1,2,5", options="header"] 
