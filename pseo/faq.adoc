@@ -14,6 +14,10 @@ How can we tell real trends in the data vs noise infusion?::
   Small numbers are more likely to be noise infusion - in very small cells, the proportion of a cell that is noise is larger. All cells, including zeroes, have some level of noise infusion in them. In the data, a cell with a true count of 0 graduates could end up displaying a handful of grads. This is unlikely but not impossible.
 
 
+So some of these small cells aren't real?::
+  The smaller the cells, the greater chance that flows totals are a result of the protection system and the signal to noise ratio is high. If the cell is large then there's a lot more signal. In some cases small cells may be infused with negative noise that results in a 0 count. 
+
+
 == Life, the Universe and Everything
 [qanda]
 What is the answer to the Ultimate Question?:: 

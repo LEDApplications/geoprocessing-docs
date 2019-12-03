@@ -1,7 +1,7 @@
 = Prod Geography Unit Testing
 :nofooter:
 :source-highlighter: highlightjs
-Jody Hoon-Starr <jody.alexander.hon-starr@census.gov>
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 
 link:../index.html[Back To Main Page]
 
