@@ -12,7 +12,6 @@ LEHD Geography Production Documents
 
 == LODES/OnTheMap
 * link:lodes/lodes-geography-sop.html[LODES/OnTheMap Standard Operating Procedure]
-* link:lodes/lodes-geography.html[LODES/OnTheMap Public Doc]
 * link:lodes/faq.html[FAQ]
 
 == QWI/QWIExplorer
