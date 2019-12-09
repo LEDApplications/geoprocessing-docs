@@ -8,7 +8,7 @@ link:../index.html[Back to Main Page]
 
 == Overview
 
-This process is nearly identical to the OnTheMap process as the requirements are very similar. To reduce code complexity the full set of LODES geography is used in the EM process but deleted at the end. In this way there are less chances for divergence in handling the data. These are dropped from the output data at the end. EM specific instructions are documented below. 
+This process is nearly identical to the OnTheMap process as the requirements are very similar. To reduce code complexity the full set of LODES geography is used in the EM process but deleted at the end. In this way there are less chances for divergence in handling the data. These OTM attributes are dropped from the output data during export. EM specific instructions are documented below. 
 
 == Unpack Faces Data
 

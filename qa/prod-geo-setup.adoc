@@ -103,6 +103,19 @@ Once the scripts are in a working state they will be put under git or svn and pl
 pg_ctl -D /data3/pgsql/pgsql/data start
 ----
 
+=== add permissions to postgis
+[source,bash]
+----
+sudo su - postgres
+psql -d otmgeo
+----
+
+[source,sql]
+----
+# grant all on public.geometry_columns to otmgeo;
+# grant all on public.spatial_ref_sys to otmgeo;
+----
+
 ==== Changing postgres port
 [source,bash]
 ----

@@ -1,7 +1,7 @@
 // tag::geo00env[]
 == Set environment variables
 
-Set the new schema prefix and environment variables
+This file defines a standard set of environment variables used by the geography processing modules. In order to keep distinct vintages separate there exists a schema prefix which will be appended to the beginning of the postgresql schema. For example, if 'otm2018' is set as the schema prefix, data will be stored in 'otm2018public', 'otm2018final', 'otm2018names' and so on. Set the new schema prefix and environment variables prior to running any new vintage as it will drop/overwrite existing schemas and tables. 
 
 [source,bash]
 ----
