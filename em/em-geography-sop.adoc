@@ -1,0 +1,191 @@
+= EM Geography Standard Operating Procedure
+:nofooter:
+:icons: font
+:source-highlighter: highlightjs
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:../index.html[Back to Main Page]
+
+== Overview
+
+This process is nearly identical to the OnTheMap process as the requirements are very similar. To reduce code complexity the full set of LODES geography is used in the EM process but deleted at the end. In this way there are less chances for divergence in handling the data. These are dropped from the output data at the end. EM specific instructions are documented below. 
+
+== Unpack Faces Data
+
+Unpack faces data needed for xwalk production
+
+[source,bash]
+----
+mkdir ~/workspace/postgis_tiger/otm_tiger_current
+cd ~/workspace/postgis_tiger/otm_tiger_current
+ln -s /data/production/prod/current/extiger/us/tl_2018*faces*gz .
+gunzip *.gz -f
+cd ..
+----
+
+include::../reference/geography.mdoc[tags=geo00env]
+
+include::../reference/geography.mdoc[tags=geo01]
+
+include::../reference/geography.mdoc[tags=geo02]
+
+== Unpack shapefile data
+
+unpack the shape data needed
+
+[source,bash]
+----
+cd ~/workspace/postgis_tiger/otm_tiger_current
+ln -s /data/production/prod/current/extiger/us/tl_2018*{aiannh,aitsn,anrc,arealm,bg,cbsa,cd116,county,cousub,elsd,mil,necta,place,pointlm,rails,scsd,sldl,sldu,state,tract,unsd,zcta510}*gz .
+gunzip *.gz -f
+cd ..
+----
+
+include::../reference/geography.mdoc[tags=geo04]
+
+== Get WIB csv
+
+unpack the wib csv data
+
+[source,bash]
+----
+mkdir wib_csvs
+cd wib_csvs
+ln -s /data/production/prod/current/exwib/us/*2018.csv.gz .
+gunzip *.gz -f
+chmod u+w *.csv
+cd ..
+----
+
+include::../reference/geography.mdoc[tags=geo05]
+
+include::../reference/geography.mdoc[tags=geo06]
+
+include::../reference/geography.mdoc[tags=geo07]
+
+include::../reference/geography.mdoc[tags=geo08]
+
+include::../reference/geography.mdoc[tags=geo09]
+
+include::../reference/geography.mdoc[tags=geo10]
+
+include::../reference/geography.mdoc[tags=geo11]
+
+include::../reference/geography.mdoc[tags=geo12]
+
+include::../reference/geography.mdoc[tags=geo13]
+
+include::../reference/geography.mdoc[tags=geo14]
+
+== Create the formatted names
+
+Create the formatted names for all OnTheMap layers.
+
+[source,bash]
+----
+time ./15_createnames.bash otm
+----
+
+include::../reference/geography.mdoc[tags=geo16]
+
+include::../reference/geography.mdoc[tags=geo17]
+
+== Finalize the layer tables
+
+Create a final version of all polygon layer tables in the expected layout.
+
+[source,bash]
+----
+time ./18_finalizegeo.bash otm
+----
+
+include::../reference/geography.mdoc[tags=geo19]
+
+include::../reference/geography.mdoc[tags=geo20]
+
+== Load and project areawater files
+
+Unpack the areawater shapefiles
+
+[source,bash]
+----
+mkdir ~/workspace/postgis_tiger/areawaterfiles
+cd ~/workspace/postgis_tiger/areawaterfiles
+ln -s /data/production/prod/current/extiger/us/tl_2018*areawater*gz .
+gunzip *.gz -f
+cd ..
+----
+
+Load and project the areawater shapefiles in the water schema
+
+[source,bash]
+----
+time ./20_lowlevelwater.bash ~/workspace/postgis_tiger/areawaterfiles
+----
+
+== Intermediate water layer
+
+=== Load data
+
+Load the necessary polygons into the water schema. This will also begin the processing
+of the midlevel coastline data that needs manual editing.
+
+[source,bash]
+----
+time ./22_midlevelwater.bash midlevel
+----
+
+=== Make manual edits
+
+. remove all standalone line segments (look at the attribute table) and then run "unsplit lines". (TODO) This step can be automated in the future by removing lines with no coincident points at the start or end of a segment.
+. use editor tools to merge endpoints that should be connected as needed then rerun "unsplit lines"
+WARNING: At this point there should be 5 linesegments - AK, Atlantic, Pacific, Great Lakes, and one small feature near Seattle
+. create a continental boundary from the us_states by disolving all features
+. convert the continental boundary to a line feature
+. hand edit the coastal boundary so that all segments cross the continental boundary edges
+. run feature to polygon on the continental lines and hand edited coast line features
+. delete the state of AK, the CONUS, and that little area in seattle.
+. repair geometry on both features to remove self intersections
+. 'erase' the water.coastline_polygons (islands) from the coastline mask
+. to create the intermediate water merge in the USGS small scale waterbody features and dissolve
+. then clip by the US boundary just to be safe
+. union layer to merge neighbors if exists
+. finally intersect with the state boundaries just so individual polygons aren't too big
+. ftp back to database server
+
+Run the following command to load the shapefile back into the database and to drop unnecessary columns
+
+[source,bash]
+----
+time ./22_midlevelwater_2.bash /path/to/intermediate_water.shp
+----
+
+== Create the ancillary layers
+
+Open the bash program below and verify that all URLs listed near the top of the table are still available and the most recent. Once complete, process all layers.
+
+[source,bash]
+----
+time ./23_ancillarylayers.bash all
+----
+
+WARNING: Check that all of the following tables appear in the landmarks schema. On occasion a filename changes which causes a failure in processing a layer
+
+. greenspace 
+. airport_area 
+. airport_point 
+. amtrak_stations 
+. rails 
+. univ_ccol 
+. nces_schools 
+. onestop
+
+
+== Set table ownership
+
+Once all layers are complete, hand ownership of tables over to the otmgeo user
+
+[source,bash]
+----
+./00_setpermissions.bash
+----

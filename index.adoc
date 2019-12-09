@@ -19,7 +19,8 @@ LEHD Geography Production Documents
 * link:qwi/qwi-geography.html[QWI/QWIExplorer Public Doc]
 
 == OnTheMap for Emergency Management
-* link:acs/validate-em-acs-lookups.html[Validate EM ACS Table Lookups]
+* link:em/em-geography-sop.html[EM Standard Operating Procedure]
+* link:em/validate-em-acs-lookups.html[Validate EM ACS Table Lookups]
 
 == PSEO
 * link:pseo/database-setup.html[PSEO Database Setup and Table Load]
