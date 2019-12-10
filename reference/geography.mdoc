@@ -12,6 +12,7 @@ vi 00_setenvvars.bash
 // tag::geo01[]
 == Load faces
 
+_runtime: 3 hours_
 This program loads the faces or facesah shape and dbf files into the prefixed public postgres schema. All files in the provided directory that match the form of faces.shp or facesah.dbf will be loaded.
 
 [source,bash]
@@ -23,6 +24,7 @@ time ./01_facesloader.bash /path/to/files faces
 // tag::geo02[]
 == Format faces for crosswalking
 
+_runtime: 3.5 hours_
 This program takes the raw faces data in the prefixed public schema and formats the fields into crosswalkable identifiers. Fields are given 9 flags and state fips codes if necessary.
 
 [source,bash]
