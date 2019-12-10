@@ -12,14 +12,15 @@ This process is nearly identical to the OnTheMap process as the requirements are
 
 == Unpack Faces Data
 
-Unpack faces data needed for xwalk production
+_runtime: x minutes_
+Unpack faces data needed for xwalk production. The full set of faces and facesah are used in creating the block crosswalk files. This step loads the raw data into the database.
 
 [source,bash]
 ----
 mkdir ~/workspace/postgis_tiger/otm_tiger_current
 cd ~/workspace/postgis_tiger/otm_tiger_current
 ln -s /data/production/prod/current/extiger/us/tl_2018*faces*gz .
-gunzip *.gz -f
+time gunzip *.gz -f
 cd ..
 ----
 
@@ -31,13 +32,14 @@ include::../reference/geography.mdoc[tags=geo02]
 
 == Unpack shapefile data
 
-unpack the shape data needed
+_runtime: 3 minutes_
+Unpack the shape data needed for processing the full suite of polygons and crosswalks. As of this writing the needed tables are identical to those required for OnTheMap although this can change and be trimmed in future iterations.
 
 [source,bash]
 ----
 cd ~/workspace/postgis_tiger/otm_tiger_current
 ln -s /data/production/prod/current/extiger/us/tl_2018*{aiannh,aitsn,anrc,arealm,bg,cbsa,cd116,county,cousub,elsd,mil,necta,place,pointlm,rails,scsd,sldl,sldu,state,tract,unsd,zcta510}*gz .
-gunzip *.gz -f
+time gunzip *.gz -f
 cd ..
 ----
 
