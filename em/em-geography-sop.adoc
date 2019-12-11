@@ -33,14 +33,14 @@ include::../reference/geography.mdoc[tags=geo02]
 
 == Unpack shapefile data
 
-_runtime: 3 minutes_
+_runtime: 5 minutes_
 
 Unpack the shape data needed for processing the full suite of polygons and crosswalks. As of this writing the needed tables are identical to those required for OnTheMap although this can change and be trimmed in future iterations.
 
 [source,bash]
 ----
 cd ~/workspace/postgis_tiger/otm_tiger_current
-ln -s /data/production/prod/current/extiger/us/tl_2018*{aiannh,aitsn,anrc,arealm,bg,cbsa,cd116,county,cousub,elsd,mil,necta,place,pointlm,rails,scsd,sldl,sldu,state,tract,unsd,zcta510}*gz .
+ln -s /data/production/prod/current/extiger/us/tl_2018*{aiannh,aitsn,anrc,arealm,bg,cbsa,cd116,county,cousub,elsd,mil,necta,place,pointlm,rails,scsd,sldl,sldu,state,tabblock10,tract,unsd,zcta510}*gz .
 time gunzip *.gz -f
 cd ..
 ----

@@ -38,7 +38,9 @@ time ./02_xwalk.bash faces
 // tag::geo04[]
 == Load shp-> db
 
-load the shape data into the db
+This program loads TIGER shapefiles into the public schema. Providing a path (/path otm) and type will load all application files expected for that type. Providing a path and single layer will load a single layer.
+
+_runtime: 20 minutes_
 
 [source,bash]
 ----
