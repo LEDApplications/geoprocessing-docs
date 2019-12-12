@@ -77,7 +77,7 @@ time ./06_wibshape.bash wib
 // tag::geo07[]
 == Validate Schemas
 
-Validate that the loaded shapefiles match the table schemas from previous
+This program validates the table schemas in postgres vs the csv schemas in the ./schemas directory. The postgis tables checked are in the otmgeo database. The schemas verified are of raw tables only - those loaded in the public schema. Check that the output lists the expected tables as "validated". Any errors that occur here will require manual adjustment of downstream processes.
 
 [source,bash]
 ----
@@ -88,11 +88,13 @@ Validate that the loaded shapefiles match the table schemas from previous
 // tag::geo08[]
 == Project Geography
 
-project into albers
+_runtime: process dependent_
+
+This program projects tables in the public schema into new tables in the working schema. All non-geomtry data is copied over unchanged. A set of predefined tables and projections are associated with the 'otm' and 'qwi' keywords but single layers can be projected as needed. See the program help instructions for more info.
 
 [source,bash]
 ----
-./08_project.bash otm
+./08_project.bash [otm|qwi]
 ----
 // end::geo08[]
 
