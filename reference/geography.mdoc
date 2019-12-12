@@ -51,7 +51,9 @@ time ./04_shapeloader.bash otm_tiger_current otm
 // tag::geo05[]
 == Load WIB Defs
 
-load the wib csv definitions into the database
+_runtime: 10 seconds_
+
+This program loads the wib csv definitions into the working.wib_definitions table. Current wib gzip prod files can be found in /data/production/prod/current/exwib/us/
 
 [source,bash]
 ----
@@ -62,7 +64,9 @@ time ./05_wibcsvloader.bash wib_csvs/
 // tag::geo06[]
 == Create public WIBs
 
-Create WIB polygons
+_runtime: 1 minute_
+
+This program creates a wib table of the component parts from county, county sub, and place tables in the prefixed public schema. A scratch table called working.wib_geometry is also used.
 
 [source,bash]
 ----
