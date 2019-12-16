@@ -101,7 +101,9 @@ This program projects tables in the public schema into new tables in the working
 // tag::geo09[]
 == Remove undefined
 
-remove undefined areas from projected shapefiles
+_runtime: 10 seconds_
+
+This program removes undefined congressional districts, state legislative districts (upper and lower), and county subdivisions
 
 [source,bash]
 ----
@@ -112,7 +114,12 @@ time ./09_removeundefined.bash all
 // tag::geo10[]
 == Remove unpopulated
 
-remove unpopulated areas from projected shapefiles
+_runtime: 6 minutes_
+
+This program removes unpopulated and unused areas from the geography tables, either all tables or individual. Guam, American Samoa, and the volcanic Hawiian chain are removed. A working.invalid table is created that contains all of the geographies to be deleted. This table persists so it can be used to delete elements from the tables that created it.
+
+The block definitions for the AK islands is now required.
+Located at: ./input_data/ak_island_blocks.csv
 
 [source,bash]
 ----
@@ -123,7 +130,9 @@ time ./10_removeunpopulated.bash otm
 // tag::geo11[]
 == Create Schools
 
-create single schools table
+_runtime: 20 seconds_
+
+This program creates the schools layer from the unsd and elsd tables in the prefixed working schema
 
 [source,bash]
 ----
@@ -132,9 +141,11 @@ create single schools table
 // end::geo11[]
 
 // tag::geo12[]
-== Format military names
+== Format names
 
-format the military names
+_runtime: 1 second_
+
+This program adjusts names on individual layers. The current iteration only makes adjustments to the mil layer. 
 
 [source,bash]
 ----
@@ -145,7 +156,9 @@ format the military names
 // tag::geo13[]
 == Crosswalk
 
-create the crosswalk 
+_runtime: hours_
+
+This program creates the takes the faces data and chooses the centermost face on a block to use for an internal point. The result data, block_xwalk_intpt in the prefixed working schema, represents the block level data. All non-centermost faces have been deleted in this file.
 
 [source,bash]
 ----
