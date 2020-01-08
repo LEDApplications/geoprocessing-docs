@@ -119,6 +119,8 @@ time ./18_finalizegeo.bash em
 
 == Export the Crosswalk CSV
 
+_runtime: 1.5 hours_
+
 Create a directory to store the final crosswalk csv and export all relevant columns.
 There are a few different versions of the crosswalk available. Choose as needed.
 
