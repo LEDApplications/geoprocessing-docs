@@ -124,9 +124,28 @@ There are a few different versions of the crosswalk available. Choose as needed.
 
 [source,bash]
 ----
-time ./19_exportxwalks.bash /some/folder blk_xwalk_wide
+time ./19_exportxwalks.bash /some/folder acs_xwalk
 ----
 
+== Export shapefiles
+
+_runtime: 15 minutes_
+
+Export all the shapefiles for EM needed by the acs_xwalk. This process generates checksums and gzips the output files. 
+
+[source,bash]
+----
+time ./24_export.bash /some/folder em
+----
+
+== Deliver files to Excensus dropbox
+
+Export all the shapefiles for EM needed by the acs_xwalk. This process generates checksums and gzips the output files. 
+
+[source,bash]
+----
+rsync -avz -e "ssh -A dev ssh" ./src lehd@treehorn2:/dst
+----
 
 == Set table ownership
 
