@@ -92,97 +92,40 @@ time ./15_createnames.bash otm
 
 include::../reference/geography.mdoc[tags=geo16]
 
-include::../reference/geography.mdoc[tags=geo17]
+== Generate water mask
+
+_runtime: 20 minutes_
+
+Generate the coastal mask from the difference between the CBF and TIGER. 
+
+IMPORTANT: The CBF layer is hardcoded as it's not released on the same schedule as tiger.
+Verify the most recent CBF release and update the year reference in the program below if necessary.
+
+[source,bash]
+----
+time ./17_generatecbfwatermask.bash otm 
+----
 
 == Finalize the layer tables
+
+_runtime: 1 day_
 
 Create a final version of all polygon layer tables in the expected layout.
 
 [source,bash]
 ----
-time ./18_finalizegeo.bash otm
+time ./18_finalizegeo.bash em
 ----
 
-include::../reference/geography.mdoc[tags=geo19]
+== Export the Crosswalk CSV
 
-include::../reference/geography.mdoc[tags=geo20]
-
-== Load and project areawater files
-
-Unpack the areawater shapefiles
+Create a directory to store the final crosswalk csv and export all relevant columns.
+There are a few different versions of the crosswalk available. Choose as needed.
 
 [source,bash]
 ----
-mkdir ~/workspace/postgis_tiger/areawaterfiles
-cd ~/workspace/postgis_tiger/areawaterfiles
-ln -s /data/production/prod/current/extiger/us/tl_2018*areawater*gz .
-gunzip *.gz -f
-cd ..
+time ./19_exportxwalks.bash /some/folder blk_xwalk_wide
 ----
-
-Load and project the areawater shapefiles in the water schema
-
-[source,bash]
-----
-time ./20_lowlevelwater.bash ~/workspace/postgis_tiger/areawaterfiles
-----
-
-== Intermediate water layer
-
-=== Load data
-
-Load the necessary polygons into the water schema. This will also begin the processing
-of the midlevel coastline data that needs manual editing.
-
-[source,bash]
-----
-time ./22_midlevelwater.bash midlevel
-----
-
-=== Make manual edits
-
-. remove all standalone line segments (look at the attribute table) and then run "unsplit lines". (TODO) This step can be automated in the future by removing lines with no coincident points at the start or end of a segment.
-. use editor tools to merge endpoints that should be connected as needed then rerun "unsplit lines"
-WARNING: At this point there should be 5 linesegments - AK, Atlantic, Pacific, Great Lakes, and one small feature near Seattle
-. create a continental boundary from the us_states by disolving all features
-. convert the continental boundary to a line feature
-. hand edit the coastal boundary so that all segments cross the continental boundary edges
-. run feature to polygon on the continental lines and hand edited coast line features
-. delete the state of AK, the CONUS, and that little area in seattle.
-. repair geometry on both features to remove self intersections
-. 'erase' the water.coastline_polygons (islands) from the coastline mask
-. to create the intermediate water merge in the USGS small scale waterbody features and dissolve
-. then clip by the US boundary just to be safe
-. union layer to merge neighbors if exists
-. finally intersect with the state boundaries just so individual polygons aren't too big
-. ftp back to database server
-
-Run the following command to load the shapefile back into the database and to drop unnecessary columns
-
-[source,bash]
-----
-time ./22_midlevelwater_2.bash /path/to/intermediate_water.shp
-----
-
-== Create the ancillary layers
-
-Open the bash program below and verify that all URLs listed near the top of the table are still available and the most recent. Once complete, process all layers.
-
-[source,bash]
-----
-time ./23_ancillarylayers.bash all
-----
-
-WARNING: Check that all of the following tables appear in the landmarks schema. On occasion a filename changes which causes a failure in processing a layer
-
-. greenspace 
-. airport_area 
-. airport_point 
-. amtrak_stations 
-. rails 
-. univ_ccol 
-. nces_schools 
-. onestop
 
 
 == Set table ownership
