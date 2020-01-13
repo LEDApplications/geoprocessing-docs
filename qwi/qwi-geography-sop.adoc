@@ -13,14 +13,23 @@ unpack data needed for QWI production
 ----
 mkdir ~/workspace/postgis_tiger/qwi_tiger_current
 cd ~/workspace/postgis_tiger/qwi_tiger_current
-ln -s /data/production/prod/current/extiger/us/*2018*{state,county,cousub,cbsa,place,tract}*gz .
+ln -s /data/production/prod/current/extiger/us/*YYYY*{state,county,cousub,cbsa,place,tract}*gz .
 gunzip *.gz -f
 cd ..
 ----
 
 include::../reference/geography.mdoc[tags=geo00env]
 
-include::../reference/geography.mdoc[tags=geo04]
+== Load shp-> db
+
+_runtime: 2 minutes_
+
+This program loads TIGER shapefiles into the public schema. Providing a path (/path otm) and type will load all application files expected for that type. Providing a path and single layer will load a single layer.
+
+[source,bash]
+----
+time ./04_shapeloader.bash qwi_tiger_current qwi
+----
 
 == Unpack wib csvs
 
@@ -30,11 +39,17 @@ unpack the csv definitions
 ----
 mkdir ~/workspace/postgis_tiger/qwi_wib_csvs
 cd ~/workspace/postgis_tiger/qwi_wib_csvs
-ln -s /data/production/prod/current/exwib/us/*gz .
+ln -s /data/production/prod/current/exwib/us/*YYYY*gz .
 gunzip *.gz -f
 chmod u+w *.csv
 cd ..
 ----
+
+include::../reference/geography.mdoc[tags=geo05]
+
+include::../reference/geography.mdoc[tags=geo06]
+
+include::../reference/geography.mdoc[tags=geo07]
 
 == Cleanup 
 
@@ -42,11 +57,9 @@ Remove unpacked files
 
 [source,bash]
 ----
-rm -rf /~workspace/postgis_tiger/qwi_tiger_current
-rm -rf ./qwi_wib_csvs/
+rm -rf ~workspace/postgis_tiger/qwi_tiger_current
+rm -rf ~workspace/postgis_tiger/qwi_wib_csvs
 ----
-
-include::../reference/geography.mdoc[tags=geo06]
 
 include::../reference/geography.mdoc[tags=geo08]
 

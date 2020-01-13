@@ -40,7 +40,7 @@ time ./02_xwalk.bash faces
 
 _runtime: 30 minutes_
 
-This program loads TIGER shapefiles into the public schema. Providing a path (/path otm) and type will load all application files expected for that type. Providing a path and single layer will load a single layer.
+This program loads TIGER shapefile into the public schema. Providing a path (/path otm) and type will load all application files expected for that type. Providing a path and single layer will load a single layer.
 
 [source,bash]
 ----
@@ -53,11 +53,11 @@ time ./04_shapeloader.bash otm_tiger_current otm
 
 _runtime: 10 seconds_
 
-This program loads the wib csv definitions into the working.wib_definitions table. Current wib gzip prod files can be found in /data/production/prod/current/exwib/us/
+This program loads the wib csv definitions into the working.wib_definitions table. This process will also correct expected encoding issues in the wib csv definitions.
 
 [source,bash]
 ----
-time ./05_wibcsvloader.bash wib_csvs/
+time ./05_wibcsvloader.bash path/to/wib_csvs/
 ----
 // end::geo05[]
 
@@ -81,7 +81,7 @@ This program validates the table schemas in postgres vs the csv schemas in the .
 
 [source,bash]
 ----
-./07_checkschemas_qa.bash all
+./07_checkschemas_qa.bash [otm|qwi]
 ----
 // end::geo07[]
 
@@ -94,7 +94,7 @@ This program projects tables in the public schema into new tables in the working
 
 [source,bash]
 ----
-./08_project.bash [otm|qwi]
+time ./08_project.bash [otm|qwi]
 ----
 // end::geo08[]
 
