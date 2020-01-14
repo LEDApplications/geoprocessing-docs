@@ -63,4 +63,16 @@ rm -rf ~workspace/postgis_tiger/qwi_wib_csvs
 
 include::../reference/geography.mdoc[tags=geo08]
 
-include::../reference/geography.mdoc[tags=geo10]
+== Remove unpopulated
+
+_runtime: 6 minutes_
+
+This program removes unpopulated and unused areas from the geography tables, either all tables or individual. Guam, American Samoa, and the volcanic Hawiian chain are removed. A working.invalid table is created that contains all of the geographies to be deleted. This table persists so it can be used to delete elements from the tables that created it.
+
+The block definitions for the AK islands is now required.
+Located at: ./input_data/ak_island_blocks.csv
+
+[source,bash]
+----
+time ./10_removeunpopulated.bash qwi
+----
