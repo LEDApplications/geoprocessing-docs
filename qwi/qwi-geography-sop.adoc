@@ -76,3 +76,50 @@ Located at: ./input_data/ak_island_blocks.csv
 ----
 time ./10_removeunpopulated.bash qwi
 ----
+
+== Create the formatted names
+
+_runtime: 1 second_
+
+Create the formatted names for all OnTheMap layers.
+
+[source,bash]
+----
+time ./15_createnames.bash qwi
+----
+
+== Generate water mask
+
+_runtime: 20 minutes_
+
+Generate the coastal mask from the difference between the CBF and TIGER. 
+
+IMPORTANT: The CBF layer is hardcoded as it's not released on the same schedule as tiger.
+Verify the most recent CBF release and update the year reference in the program below if necessary.
+
+[source,bash]
+----
+time ./17_generatecbfwatermask.bash qwi
+----
+
+== Finalize the layer tables
+
+_runtime: x minutes_
+
+Create a final version of all polygon layer tables in the expected layout.
+
+[source,bash]
+----
+time ./18_finalizegeo.bash qwi
+----
+
+== Export shapefiles
+
+_runtime: x minutes_
+
+Export all the shapefiles for EM needed by the acs_xwalk. This process generates checksums and gzips the output files. 
+
+[source,bash]
+----
+time ./24_export.bash /some/folder em
+----
