@@ -104,7 +104,7 @@ time ./17_generatecbfwatermask.bash qwi
 
 == Finalize the layer tables
 
-_runtime: x minutes_
+_runtime: 8 hours_
 
 Create a final version of all polygon layer tables in the expected layout.
 
@@ -115,11 +115,11 @@ time ./18_finalizegeo.bash qwi
 
 == Export shapefiles
 
-_runtime: x minutes_
+_runtime: 1 minute_
 
 Export all the shapefiles for EM needed by the acs_xwalk. This process generates checksums and gzips the output files. 
 
 [source,bash]
 ----
-time ./24_export.bash /some/folder em
+time ./24_export.bash /some/folder qwi
 ----
