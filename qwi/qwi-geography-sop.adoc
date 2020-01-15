@@ -117,7 +117,7 @@ time ./18_finalizegeo.bash qwi
 
 _runtime: 1 minute_
 
-Export all the shapefiles for EM needed by the acs_xwalk. This process generates checksums and gzips the output files. 
+Export all the shapefiles for QWI and J2J. This process generates checksums and gzips the output files. 
 
 [source,bash]
 ----
