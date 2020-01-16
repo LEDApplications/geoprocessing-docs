@@ -14,7 +14,7 @@ Unpack faces data needed for xwalk production
 ----
 mkdir ~/workspace/postgis_tiger/otm_tiger_current
 cd ~/workspace/postgis_tiger/otm_tiger_current
-ln -s /data/production/prod/current/extiger/us/tl_2018*faces*gz .
+ln -s /data/production/prod/current/extiger/us/tl_2019*faces*gz .
 gunzip *.gz -f
 cd ..
 ----
@@ -32,7 +32,7 @@ unpack the shape data needed
 [source,bash]
 ----
 cd ~/workspace/postgis_tiger/otm_tiger_current
-ln -s /data/production/prod/current/extiger/us/tl_2018*{aiannh,aitsn,anrc,arealm,bg,cbsa,cd116,county,cousub,elsd,mil,necta,place,pointlm,rails,scsd,sldl,sldu,state,tract,unsd,zcta510}*gz .
+ln -s /data/production/prod/current/extiger/us/tl_2019*{aiannh,aitsn,anrc,arealm,bg,cbsa,cd116,county,cousub,elsd,mil,necta,place,pointlm,rails,scsd,sldl,sldu,state,tract,unsd,zcta510}*gz .
 gunzip *.gz -f
 cd ..
 ----
@@ -47,7 +47,7 @@ unpack the wib csv data
 ----
 mkdir wib_csvs
 cd wib_csvs
-ln -s /data/production/prod/current/exwib/us/*2018.csv.gz .
+ln -s /data/production/prod/current/exwib/us/*2019.csv.gz .
 gunzip *.gz -f
 chmod u+w *.csv
 cd ..
