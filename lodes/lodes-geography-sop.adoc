@@ -75,6 +75,8 @@ include::../reference/geography.mdoc[tags=geo14]
 
 == Create the formatted names
 
+_runtime: 10 days_
+
 Create the formatted names for all OnTheMap layers.
 
 [source,bash]
