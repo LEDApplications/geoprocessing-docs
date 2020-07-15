@@ -187,3 +187,33 @@ Once all layers are complete, hand ownership of tables over to the otmgeo user
 ----
 ./00_setpermissions.bash
 ----
+
+== Delivery
+=== Xwalks
+The wide and data versions of the xwalk will need to be delivered to production. Ask staff for delivery location and rsync.
+
+[source,bash]
+----
+./19_exportxwalks.bash ./path/to/direcoty blk_xwalk_wide
+./19_exportxwalks.bash ./path/to/direcoty blk_xwalk_data
+----
+
+=== Watermaps
+The production system uses flagged geoids to determine which locations are ineligible for residence considerations. These are generated and delivered to production along with the xwalks.
+
+[source,bash]
+----
+./25_xwalksaswatermaps.bash ./path/to/direcoty all
+----
+
+=== Shapefiles
+The polygon files, landmarks, and water files will need to be delivered offsite for application development. Export them and rsync to the dropbox.
+
+[source,bash]
+----
+./24_export.bash ./path/to/direcoty otm
+./24_export.bash ./path/to/direcoty landmarks
+./24_export.bash ./path/to/direcoty water
+----
+
+
