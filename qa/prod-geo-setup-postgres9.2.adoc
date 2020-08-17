@@ -1,0 +1,125 @@
+= Prod Geography Postgres & PGUnit Setup
+:nofooter:
+:source-highlighter: highlightjs
+Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
+
+link:../index.html[Back To Main Page]
+
+== Overview
+This document overviews how to configure the lehd geoprocessing database. These steps were performed on RHEL7 using the Red Hat repositories.
+
+== Requirements
+1. https://www.postgresql.org/docs/9.2/[Postgres 9.2] and http://postgis.net/docs/manual-2.0/[PostGIS 2.0] configured using the `postgres` user as the owner.
+2. To continue these steps personal user will need to be able to sudo into the `postgres` user.
+3. Individual users should also be able to access postgres and postgis executables such as `psql` and `shp2pgsql`.
+
+== Cluster Initialization
+This process creates a cluster on disk - make sure there is an appropriate amount of space available.
+[source,bash]
+----
+# login to the server
+ssh servername
+# access the postgres cluster owner user
+sudo su - postgres
+# initialize a database
+initdb -D /path/to/cluster/on/disk
+# start the database
+pg_ctl -D /path/to/cluster/on/disk start
+----
+
+== Create DB and Enable PostGIS
+Create a database within the new cluster.
+[source,bash]
+----
+createdb geoprocessing
+psql -d geoprocessing
+----
+[source,sql]
+----
+CREATE EXTENSION postgis;
+GRANT SELECT, INSERT ON TABLE public.spatial_ref_sys TO public;
+\q
+----
+
+== Grant DB Access to User
+[source,bash]
+----
+# create a user in the database
+createuser yourusername
+
+# login as personal user
+psql -d geoprocessing
+----
+Test postgis access is working correctly.
+[source,sql]
+----
+select * from spatial_ref_sys limit 1;
+----
+
+== Insert the Albers North America Spatial Reference
+Create the esri SRID reference following the https://epsg.io/102003[EPSG] definition.
+[source,sql]
+----
+INSERT into spatial_ref_sys (srid, auth_name, auth_srid, proj4text, srtext) values ( 102003, 'ESRI', 102003, '+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs ', 'PROJCS["USA_Contiguous_Albers_Equal_Area_Conic",GEOGCS["GCS_North_American_1983",DATUM["North_American_Datum_1983",SPHEROID["GRS_1980",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Albers_Conic_Equal_Area"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["longitude_of_center",-96],PARAMETER["Standard_Parallel_1",29.5],PARAMETER["Standard_Parallel_2",45.5],PARAMETER["latitude_of_center",37.5],UNIT["Meter",1],AUTHORITY["EPSG","102003"]]');
+\q
+----
+Logout of the postgres user
+[source,bash]
+----
+exit
+----
+
+== Download the Existing Geoprocessing Code
+A future version of these docs will reference an internal git repo rather than this personal copy.
+[source,bash]
+----
+cd /path/to/location
+git clone https://githubusername:githubaccesskey@github.com/jodyhoonstarr/lehd-geoprocessing.git
+----
+
+If run internally this needs some odd handling to get through the firewall. If auth fails when running clone then
+[source,bash]
+----
+GIT_CURL_VERBOSE=1 GIT_TRACE=1 git clone ...
+----
+Look at the 307 redirect output then open the url in browser.
+
+Remove the git history since this currently references a personal repository.
+[source,bash]
+----
+cd lehd-geoprocessing
+rm -rf .git
+----
+
+== Allow Create Access
+External users can't access the db so allow any internal user create access.
+[source,bash]
+----
+sudo su - postgres
+psql geoprocessing
+----
+[source,sql]
+----
+grant create on database geoprocessing to public;
+\q
+----
+Logout of the postgres user
+[source,bash]
+----
+exit
+----
+
+== PGUnit Setup
+[source,bash]
+----
+cd /path/to/location/lehd-geoprocessing
+psql geoprocessing -f unit_testing_setup/pgunit_edited.sql
+sudo su - postgres
+psql geoprocessing
+----
+
+[source,sql]
+----
+ALTER DATABASE geoprocessing SET search_path TO public, pgunit;
+\q
+----

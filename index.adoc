@@ -6,7 +6,7 @@ Jody Hoon-Starr <jody.alexander.hoon-starr@census.gov>
 LEHD Geography Production Documents
 
 == QA
-* link:qa/prod-geo-setup.html[Production Geography Setup]
+* link:qa/prod-geo-setup-postgres9.2.html[Production Geography Setup]
 * link:qa/prod-geo-qa.html[Production Geography QA]
 * link:qa/prod-geo-unittest.html[Production Geography Unit Testing]
 
