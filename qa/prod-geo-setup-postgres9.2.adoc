@@ -123,3 +123,34 @@ psql geoprocessing
 ALTER DATABASE geoprocessing SET search_path TO public, pgunit;
 \q
 ----
+
+== PGTune Settings
+The default configuration for postgres is inadequate for processing the data in a timely manner. Use the online PGTune utility to generate settings as needed. The available resources on the data cluster are enormous, but the postgres server will be disconnected from the typical job scheduler - as such it should play nice with the rest of the system resources. It is tenatively assumed that the behavior should match that of a moderate class single instance database server (12 cpu, 32G mem) and should behave like a data warehouse (dw).
+[source,bash]
+----
+sudo su - postgres
+cd /path/to/postgres/data/
+----
+Modify `postgresql.conf` to include the following config changes.
+[source,conf]
+----
+# DB Version: 9.2
+# OS Type: linux
+# DB Type: dw
+# Total Memory (RAM): 32 GB
+# CPUs num: 12
+# Connections num: 20
+# Data Storage: san
+
+max_connections = 20
+shared_buffers = 8GB
+effective_cache_size = 24GB
+maintenance_work_mem = 2GB
+checkpoint_completion_target = 0.9
+wal_buffers = 16MB
+default_statistics_target = 500
+random_page_cost = 1.1
+effective_io_concurrency = 300
+work_mem = 209715kB
+checkpoint_segments = 128
+----
