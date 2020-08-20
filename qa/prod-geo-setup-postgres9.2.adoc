@@ -109,6 +109,19 @@ Logout of the postgres user
 exit
 ----
 
+== Set log level
+
+[source,bash]
+----
+sudo su - postgres
+psql geoprocessing
+----
+[source,sql]
+----
+ALTER DATABASE geoprocessing SET client_min_messages TO WARNING;
+\q
+----
+
 == PGUnit Setup
 [source,bash]
 ----
