@@ -149,21 +149,19 @@ Modify `postgresql.conf` to include the following config changes.
 ----
 # DB Version: 9.2
 # OS Type: linux
-# DB Type: dw
-# Total Memory (RAM): 32 GB
-# CPUs num: 12
-# Connections num: 20
+# DB Type: mixed
+# Total Memory (RAM): 264 GB
 # Data Storage: san
 
-max_connections = 20
-shared_buffers = 8GB
-effective_cache_size = 24GB
+max_connections = 100
+shared_buffers = 66GB
+effective_cache_size = 198GB
 maintenance_work_mem = 2GB
 checkpoint_completion_target = 0.9
 wal_buffers = 16MB
-default_statistics_target = 500
+default_statistics_target = 100
 random_page_cost = 1.1
 effective_io_concurrency = 300
-work_mem = 209715kB
-checkpoint_segments = 128
+work_mem = 346030kB
+checkpoint_segments = 32
 ----
