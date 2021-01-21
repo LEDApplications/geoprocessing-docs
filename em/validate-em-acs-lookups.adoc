@@ -10,8 +10,18 @@ link:../index.html[Back to Main Page]
 
 === Preparation
 
+* TODO turn YYYY into params before running this again
 * download the tableshells
+Example: https://www2.census.gov/programs-surveys/acs/summary_file/2019/documentation/user_tools/ACS2019_Table_Shells
+.xlsx[ACS2019_Table_Shells]
 * convert them to csv files
+Open in excel and save as UTF-8 CSV
+* scp over to the production servers
+[source,bash]
+----
+scp ACS2019_TableShells.csv prodserver:/path/to/workdir
+----
+
 * remove any windows text formatting with:
 [source,bash]
 ----
@@ -24,7 +34,7 @@ dos2unix filename
 [source,SQL]
 ----
 CREATE SCHEMA acs;
-CREATE TABLE acs.tableshells2017 (
+CREATE TABLE acs.tableshells2018 (
 TableID TEXT,
 Line TEXT,
 UniqueID TEXT,
@@ -32,7 +42,7 @@ Stub TEXT,
 DataRelease TEXT
 );
 
-CREATE TABLE acs.tableshells2018 (
+CREATE TABLE acs.tableshells2019 (
 TableID TEXT,
 Line TEXT,
 UniqueID TEXT,
@@ -45,16 +55,16 @@ DataRelease TEXT
 
 [source,SQL]
 ----
-\copy acs.tableshells2017 FROM 'ACS2015_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
-\copy acs.tableshells2018 FROM 'ACS2017_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
+\copy acs.tableshells2018 FROM 'ACS2018_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
+\copy acs.tableshells2019 FROM 'ACS2019_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
 ----
 
 === Drop all with data with a null uniqueid
 
 [source,SQL]
 ----
-DELETE FROM acs.tableshells2017 WHERE uniqueid IS NULL;
 DELETE FROM acs.tableshells2018 WHERE uniqueid IS NULL;
+DELETE FROM acs.tableshells2019 WHERE uniqueid IS NULL;
 ----
 
 === Check differences in EM Lookups
@@ -82,36 +92,36 @@ TRUNCATE acs.tableshells2018;
 === Reload the data
 [source,SQL]
 ----
-\copy acs.tableshells2017 FROM 'ACS2015_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
-\copy acs.tableshells2018 FROM 'ACS2017_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
+\copy acs.tableshells2018 FROM 'ACS2018_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
+\copy acs.tableshells2019 FROM 'ACS2019_Table_Shells_fix.csv' DELIMITER ',' CSV HEADER
 ----
 
 === Drop rows with no tableid
 [source,SQL]
 ----
-DELETE FROM acs.tableshells2017 WHERE tableid IS NULL;
 DELETE FROM acs.tableshells2018 WHERE tableid IS NULL;
+DELETE FROM acs.tableshells2019 WHERE tableid IS NULL;
 ----
 
 === Drop all data with uniqueid (to get table info)
 [source,SQL]
 ----
-DELETE FROM acs.tableshells2017 WHERE uniqueid IS NOT NULL;
 DELETE FROM acs.tableshells2018 WHERE uniqueid IS NOT NULL;
+DELETE FROM acs.tableshells2019 WHERE uniqueid IS NOT NULL;
 ----
 
 === Drop rows where text says "Universe:"
 [source,SQL]
 ----
-DELETE FROM acs.tableshells2017 WHERE stub LIKE '%Universe:%';
 DELETE FROM acs.tableshells2018 WHERE stub LIKE '%Universe:%';
+DELETE FROM acs.tableshells2019 WHERE stub LIKE '%Universe:%';
 ----
 
 === Drop where text is blank
 [source,SQL]
 ----
-DELETE FROM acs.tableshells2017 WHERE stub IS NULL;
 DELETE FROM acs.tableshells2018 WHERE stub IS NULL;
+DELETE FROM acs.tableshells2019 WHERE stub IS NULL;
 ----
 
 === Test that the tablenames haven't changed
@@ -132,6 +142,9 @@ ACS Produces a lookup table for getting seq and offset.
 The 2017 5-year sheet can be found [here](https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.xls).
 
 === Validate table below vs ACS excel sheet
+
+See the planio tickets for the most recent version of this table. The one below is an example.
+
 [%header,format=csv]
 |===
 Table, Sequence, Start Positon
